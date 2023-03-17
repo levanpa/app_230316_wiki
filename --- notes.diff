@@ -9,3 +9,5 @@
 --- steps
 - init project
 npm create vite@latest app_230316_wiki
+- install pug
+npm install -D pug pug-plain-loader --save-dev
