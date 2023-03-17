@@ -1,0 +1,11 @@
+--- notes
+
+
+--- 06/02/2023
+--- WIKIPEDIA template sample
+
+
+
+--- steps
+- init project
+npm create vite@latest app_230316_wiki
