@@ -18,7 +18,7 @@ HelloWorld(msg='Vite + Vue')
   will-change: filter
   transition: filter 300ms
   &:hover
-    filter: drop-shadow(0 0 2em #646cffaa)
+    filter: drop-shadow(0 0 2em $red)
   &.vue:hover
     filter: drop-shadow(0 0 2em #42b883aa)
 </style>
