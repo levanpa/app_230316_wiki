@@ -1,0 +1,65 @@
+.overflow-scroll
+  overflow: scroll
+  scrollbar-width: none // FF
+  -ms-overflow-style: none // Edge
+  &::-webkit-scrollbar // webkit - Chr
+    display: none
+
+.card-component
+  .card-wrapper
+    display: grid
+    grid-template-columns: 50px 350px
+
+  .side-bar
+    border-right: 3px solid #b0b0b0
+    color: #fff
+    background-color: #8c6000
+  .menu-icon,
+  .search-icon
+    display: flex
+    justify-content: center
+    align-items: center
+    height: 50px
+    font-size: 20px
+    transition: background-color ease 0.25s
+    &:hover
+      background-color: rgba(#fff, 0.15)
+  .menu-wrapper
+    ul
+      display: flex
+      flex-direction: column
+      gap: 10px
+      padding: 0 6px
+    .menu-link
+      display: flex
+      justify-content: center
+      align-items: center
+      width: 100%
+      padding: 10px 0
+      writing-mode: vertical-lr
+      transform: rotate(180deg)
+      color: #fff
+      transition: background-color ease 0.25s
+      &:hover
+        background-color: rgba(#fff, 0.15)
+
+  .main-content
+    background-color: #fdeedd
+    .page-title
+      font-weight: bold
+      font-size: 20px
+      padding: 0 10px
+    .images-list
+      display: flex
+      width: fit-content
+      gap: 6px
+    .image-item
+      width: 300px
+      height: 200px
+      background-color: #aaa
+    .content-wrapper
+      height: 400px
+      overflow: auto
+    .content
+      padding: 0 10px
+      text-align: justify
