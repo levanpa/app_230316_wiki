@@ -14,3 +14,11 @@ npm install -D pug pug-plain-loader --save-dev
 - install sass
 npm i sass --save-dev
 npm i sass-loader@10 --save-dev
+- remove global sass loading in vite.config.js
+- import global sass in App.vue
+- install typescript support for pugjs
+npm install -D @volar/vue-language-plugin-pug
+- add this into tsconfig.json
+"vueCompilerOptions": {
+  "plugins": ["@volar/vue-language-plugin-pug"]
+}
