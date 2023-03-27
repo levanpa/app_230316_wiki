@@ -9,5 +9,14 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  css: {
+    preprocessorOptions: {
+      sass: {
+        additionalData: `
+        @import "@/sass/base/mixins.sass"
+        `,
+      },
+    },
+  },
   plugins: [vue()],
 })

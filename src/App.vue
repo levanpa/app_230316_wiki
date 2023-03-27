@@ -1,9 +1,19 @@
 <script setup lang="ts">
-import Card from './components/Card.vue'
+import { onMounted } from "vue"
+import Header from './components/Header.vue'
+import TopBanner from './components/TopBanner.vue'
+import Body from './Body.vue'
+import Detail from './Detail.vue'
+onMounted(() => {
+  document.getElementById('app')?.classList.add('is-show')
+})
 </script>
 
 <template lang="pug">
-Card(title="Biography in detail")
+Header
+TopBanner
+//- Body
+Detail
 </template>
 
 <style lang="sass">

@@ -130,6 +130,10 @@ button, input, optgroup, select, textarea
   color: inherit // 1
   font: inherit // 2
   margin: 0 // 3
+  border: none
+  -webkit-box-shadow: none
+  -moz-box-shadow: none
+  box-shadow: none
 
 // Address `overflow` set to `hidden` in IE 8/9/10.
 button
@@ -176,7 +180,6 @@ input
 // 2. Remove excess padding in IE 8/9/10.
 
 input[type="checkbox"], input[type="radio"]
-  box-sizing: border-box // 1
   padding: 0 // 2
 
 // Fix the cursor style for Chrome's increment/decrement buttons. For certain
@@ -234,6 +237,10 @@ td, th
 
 // -----------------------------------------
 // CUSTOM reset
+*, *:before, *:after
+  margin: 0
+  padding: 0
+  box-sizing: border-box
 a
   text-decoration: none
   color: inherit
@@ -242,5 +249,13 @@ ul, li, ol
   list-style: none
 
 h1, h2, h3, h4, h5, h6
-  font-size: unset
-  font-weight: f
+  font-size: inherit
+  font-weight: normal
+
+input
+  &:focus,
+  &:focus-visible
+    outline: none
+
+button
+  background: none

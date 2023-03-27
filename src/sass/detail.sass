@@ -1,0 +1,63 @@
+.detail-component
+  padding-top: 40px
+  .job-item
+    display: flex
+    margin-bottom: 30px
+    background-color: rgb(224, 241, 255)
+  .job-image
+    width: 90px
+    height: 90px
+    margin-right: 20px
+    background: #ccc
+  .has-icon
+    margin-bottom: 5px
+    padding-left: 30px
+    position: relative
+    > i
+      position: absolute
+      top: 0
+      left: 0
+  .job-name
+    > .name
+      font-size: 24px
+      font-weight: 700
+      color: #3567d2
+    > i
+      top: 7px
+
+  // .review-list
+  .review-item
+    margin-bottom: 20px
+    padding: 15px 20px
+    border: 1px solid #bbb
+    border-radius: 10px
+    .top
+      margin-bottom: 5px
+    .name
+      font-weight: 600
+      font-size: 18px
+    .content
+      padding: 10px 0
+      text-align: justify
+      color: #333
+      border-top: 1px solid #bbb
+      border-bottom: 1px solid #bbb
+    .bottom
+      display: flex
+      gap: 20px
+      padding-top: 10px
+      > button
+        display: inline-flex
+        align-items: center
+        gap: 8px
+        padding: 4px 8px
+        border-radius: 50px
+        transition: background-color ease 0.2s
+        &:hover
+          background-color: #e7eef7
+      i
+        font-size: 24px
+    .like i
+      color: #19c819
+    .dislike i
+      color: #ca4040

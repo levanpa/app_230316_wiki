@@ -1,0 +1,12 @@
+@mixin hover-bg($color: #fff)
+  transition: background-color ease 0.25s
+  &:hover
+    background-color: rgba($color, 0.15)
+
+// scroll without scrollbar
+@mixin hidden-scroll
+  overflow: scroll
+  scrollbar-width: none // FF
+  -ms-overflow-style: none // Edge
+  &::-webkit-scrollbar // webkit - Chr
+    display: none

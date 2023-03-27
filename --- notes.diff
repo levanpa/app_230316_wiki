@@ -14,7 +14,6 @@ npm install -D pug pug-plain-loader --save-dev
 - install sass
 npm i sass --save-dev
 npm i sass-loader@10 --save-dev
-- remove global sass loading in vite.config.js
 - import global sass in App.vue
 - install typescript support for pugjs
 npm install -D @volar/vue-language-plugin-pug
@@ -22,3 +21,12 @@ npm install -D @volar/vue-language-plugin-pug
 "vueCompilerOptions": {
   "plugins": ["@volar/vue-language-plugin-pug"]
 }
+
+
+
+--- prepare ideal
+- Pinia: state management
+- Vue Router 4: route management
+
+- cardboard
+- fadeout side (not in focus) element
