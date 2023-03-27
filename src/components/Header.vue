@@ -13,7 +13,7 @@
 header.header-component
   .layout-wrapper
     .left
-      a.header-logo(href="#")
+      router-link.header-logo(to="/")
         img(src="/src/assets/logo.svg" alt="logo")
         span Job Review
     .right

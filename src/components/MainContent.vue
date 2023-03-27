@@ -13,9 +13,9 @@
 <template lang="pug">
 .main-content-component
   ul.job-list
-    each i in Array(5)
+    each i in Array(8)
       li.job-item
-        a.job-link(href="#")
+        router-link.job-link(to="/detail")
           img.job-image(src="/src/assets/logo.svg", alt="")
           .job-info
             .job-name.has-icon

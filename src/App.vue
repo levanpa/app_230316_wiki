@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { onMounted } from "vue"
 import Header from './components/Header.vue'
+import Footer from './components/Footer.vue'
 import TopBanner from './components/TopBanner.vue'
-import Body from './Body.vue'
-import Detail from './Detail.vue'
 onMounted(() => {
+  // reduce layout change
   document.getElementById('app')?.classList.add('is-show')
 })
 </script>
@@ -12,8 +12,8 @@ onMounted(() => {
 <template lang="pug">
 Header
 TopBanner
-//- Body
-Detail
+router-view
+Footer
 </template>
 
 <style lang="sass">

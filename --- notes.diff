@@ -21,6 +21,8 @@ npm install -D @volar/vue-language-plugin-pug
 "vueCompilerOptions": {
   "plugins": ["@volar/vue-language-plugin-pug"]
 }
+- install vueRouter 4
+npm install vue-router@4
 
 
 
