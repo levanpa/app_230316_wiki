@@ -9,12 +9,13 @@ let jobStore = useJobsStore()
 let jobs: Ref<dto.jobDto[]> = ref([])
 let tempJob: dto.jobDto[] | undefined
 
-// fetch data
-tempJob = jobStore.get()
-console.log('tempJob', tempJob)
-if (tempJob && tempJob[0]) {
-  jobs.value = tempJob
-} else {
+fetchData()
+
+function fetchData() {
+  tempJob = jobStore.get()
+  if (tempJob && tempJob[0]) {
+    jobs.value = tempJob
+  }
   axios.get('http://localhost:3003/jobs').then((response) => {
     jobs.value = response.data
     jobs.value && jobStore.add(jobs.value)
