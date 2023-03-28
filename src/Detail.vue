@@ -3,28 +3,47 @@ import { ref } from 'vue'
 import type { Ref } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
-import * as dto from './dto';
+import * as dto from './dto'
+import { useJobsStore } from './stores/jobs'
+import { useReviewsStore } from './stores/reviews'
 
 const route = useRoute()
+let jobStore = useJobsStore()
+let reviewStore = useReviewsStore()
 let reviews: Ref<dto.reviewDto[]> = ref([])
+let tempReviews: dto.reviewDto[] | undefined
 let job: Ref<dto.jobDto | undefined> = ref()
 let jobId: string = (route.params.id).toString()
 
-// fetch data
-axios.get('http://localhost:3003/jobs', {
-  params: {
-    id: jobId
-  }
-}).then((response) => {
-  job.value = response.data[0]
-})
-axios.get('http://localhost:3003/reviews', {
-  params: {
-    job_id: jobId
-  }
-}).then((response) => {
-  reviews.value = response.data
-})
+// check if there is data in store
+let tempJob = jobStore.get(jobId)
+if (tempJob) {
+  job.value = tempJob[0]
+} else {
+  axios.get('http://localhost:3003/jobs', {
+    params: {
+      id: jobId
+    }
+  }).then((response) => {
+    job.value = response.data[0]
+    job.value && jobStore.add([job.value])
+  })
+}
+
+tempReviews = reviewStore.get(jobId)
+if (tempReviews && tempReviews[0]) {
+  reviews.value = tempReviews
+  console.log('tempReviews', tempReviews)
+} else {
+  axios.get('http://localhost:3003/reviews', {
+    params: {
+      job_id: jobId
+    }
+  }).then((response) => {
+    reviews.value = response.data
+    reviews.value && reviewStore.add(reviews.value)
+  })
+}
 </script>
 
 <template lang="pug">

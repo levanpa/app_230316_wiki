@@ -25,7 +25,9 @@ npm install -D @volar/vue-language-plugin-pug
 npm install vue-router@4
 - install axios
 npm i axios
-- use Mock server to fake API response
+- use json-server to fake API
+- install pinia
+npm install pinia
 
 
 

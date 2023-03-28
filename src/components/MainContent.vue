@@ -2,21 +2,30 @@
 import { ref } from 'vue'
 import type { Ref } from 'vue'
 import axios from 'axios'
-import * as dto from '../dto';
+import * as dto from '../dto'
+import { useJobsStore } from '../stores/jobs'
 
-let data: Ref<dto.jobDto[]> = ref([])
+let jobStore = useJobsStore()
+let jobs: Ref<dto.jobDto[]> = ref([])
+let tempJob: dto.jobDto[] | undefined
 
 // fetch data
-axios.get('http://localhost:3003/jobs').then((response) => {
-  data.value = response.data
-  console.log(data.value[0].id)
-})
+tempJob = jobStore.get()
+console.log('tempJob', tempJob)
+if (tempJob && tempJob[0]) {
+  jobs.value = tempJob
+} else {
+  axios.get('http://localhost:3003/jobs').then((response) => {
+    jobs.value = response.data
+    jobs.value && jobStore.add(jobs.value)
+  })
+}
 </script>
 
 <template lang="pug">
 .main-content-component
-  ul.job-list(v-if="data[0]")
-    li.job-item(v-for="item in data")
+  ul.job-list(v-if="jobs[0]")
+    li.job-item(v-for="item in jobs")
       router-link.job-link(:to="'/detail/' + item.id")
         img.job-image(:src="item.img", :alt="item.name")
         .job-info
