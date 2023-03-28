@@ -1,33 +1,35 @@
 <script setup lang="ts">
-// import { ref } from 'vue'
-// import CardMenu from './CardMenu.vue'
-// defineProps<{ title: string }>()
-// let hidden = ref(true)
+import { ref } from 'vue'
+import type { Ref } from 'vue'
+import axios from 'axios'
+import * as dto from '../dto';
 
-// function handleMenu($event: Event) {
-//   $event.preventDefault()
-//   hidden.value = !hidden.value
-// }
+let data: Ref<dto.jobDto[]> = ref([])
+
+// fetch data
+axios.get('http://localhost:3003/jobs').then((response) => {
+  data.value = response.data
+  console.log(data.value[0].id)
+})
 </script>
 
 <template lang="pug">
 .main-content-component
-  ul.job-list
-    each i in Array(8)
-      li.job-item
-        router-link.job-link(to="/detail")
-          img.job-image(src="/src/assets/logo.svg", alt="")
-          .job-info
-            .job-name.has-icon
-              i.fa-solid.fa-briefcase
-              span.name Designer
-              span.count &nbsp;(25)
-            .job-location.has-icon
-              i.fa-solid.fa-location-dot
-              span Trong nuoc
-            .job-field.has-icon
-              i.fa-regular.fa-map
-              span Marketing
+  ul.job-list(v-if="data[0]")
+    li.job-item(v-for="item in data")
+      router-link.job-link(:to="'/detail/' + item.id")
+        img.job-image(:src="item.img", :alt="item.name")
+        .job-info
+          .job-name.has-icon
+            i.fa-solid.fa-briefcase
+            span.name {{ item.name }}
+            span.count &nbsp;({{ item.review_counter }})
+          .job-location.has-icon
+            i.fa-solid.fa-location-dot
+            span {{ item.location }}
+          .job-field.has-icon
+            i.fa-regular.fa-map
+            span {{ item.category }}
 
 </template>
 

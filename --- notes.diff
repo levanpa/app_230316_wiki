@@ -23,6 +23,9 @@ npm install -D @volar/vue-language-plugin-pug
 }
 - install vueRouter 4
 npm install vue-router@4
+- install axios
+npm i axios
+- use Mock server to fake API response
 
 
 

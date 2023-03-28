@@ -9,7 +9,7 @@ const routes = [
     meta: { title: 'home page' }
   },
   {
-    path: '/detail',
+    path: '/detail/:id',
     component: Detail,
     meta: { title: 'detail page' }
   },
