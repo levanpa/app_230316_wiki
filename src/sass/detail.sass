@@ -21,9 +21,16 @@
     > .name
       font-size: 24px
       font-weight: 700
-      color: #3567d2
+      color: $color1
     > i
       top: 7px
+  .actions
+    padding: 0 20px
+    margin-left: auto
+    align-self: center
+    button
+      margin: 0 10px
+      @include common-button
 
   // .review-list
   .review-item
@@ -32,10 +39,15 @@
     border: 1px solid #bbb
     border-radius: 10px
     .top
+      display: flex
+      align-items: center
       margin-bottom: 5px
     .name
+      display: inline-block
+      font-size: 20px
       font-weight: 600
-      font-size: 18px
+    .time
+      margin-left: auto
     .content
       padding: 10px 0
       text-align: justify
@@ -61,3 +73,22 @@
       color: #19c819
     .dislike i
       color: #ca4040
+
+  .sort-filter-wrapper
+    display: flex
+    align-items: center
+    gap: 30px
+    margin-bottom: 25px
+    padding: 15px 20px
+    border: 1px solid rgb(73, 24, 161)
+    border-radius: 8px
+    span
+      margin-right: 20px
+      font-weight: 500
+    select
+      padding: 4px 8px
+      border: 1px solid #ccc
+      background-color: #fff
+      border-radius: 6px
+    .apply-button
+      @include common-button

@@ -12,6 +12,7 @@
 
 <template lang="pug">
 .top-banner-component
+  .bg-overlay
   .layout-wrapper
     h1.top-banner-title Review các công việc, ngành nghề của người Việt
     .job-search

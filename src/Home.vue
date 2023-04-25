@@ -13,7 +13,7 @@ import Sidebar from './components/Sidebar.vue'
 // @import "/src/sass/base/_base"
 .main-content-wrapper
   display: grid
-  grid-template-columns: 550px 400px
-  padding-top: 40px
-  gap: 50px
+  grid-template-columns: 60% calc(40% - 20px)
+  padding: 40px 0
+  gap: 20px
 </style>

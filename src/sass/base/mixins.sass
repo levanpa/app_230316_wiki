@@ -1,3 +1,7 @@
+// VARIABLES
+$color1: #3567d2
+
+// MIXINS  
 @mixin hover-bg($color: #fff)
   transition: background-color ease 0.25s
   &:hover
@@ -10,3 +14,21 @@
   -ms-overflow-style: none // Edge
   &::-webkit-scrollbar // webkit - Chr
     display: none
+
+@mixin line-clamp($line:1)
+  display: -webkit-box
+  -webkit-line-clamp: $line
+  -webkit-box-orient: vertical
+  overflow: hidden
+
+@mixin common-button
+  padding: 4px 10px
+  background-color: #fff
+  border: 1px solid $color1
+  border-radius: 30px
+  font-size: 18px
+  font-weight: 600
+  transition: all ease 0.25s
+  &:hover
+    color: #fff
+    background-color: $color1

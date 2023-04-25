@@ -1,14 +1,24 @@
 .header-component
   height: 75px
   background: linear-gradient(to right, #314268, #824949, #c3acf7)
-  .header-logo
+  .header-logo,
+  .header-user
     @include hover-bg
+    color: #fff
+    font-size: 20px
+  .header-logo
     display: inline-flex
     align-items: center
     gap: 20px
     padding: 0 15px
-    color: #fff
-    font-size: 20px
     img
       width: 64px
       height: 64px
+  .header-user
+    padding: 6px 20px
+    border-radius: 20px
+
+  .header-wrapper
+    display: flex
+    justify-content: space-between
+    align-items: center

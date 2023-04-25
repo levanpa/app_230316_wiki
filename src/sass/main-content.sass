@@ -1,6 +1,8 @@
 .main-content-component
+  padding: 20px
+  box-shadow: 1px 1px 5px #aaa
   .job-item
-    margin-bottom: 10px
+    padding: 5px 0
     border-bottom: 1px solid #eee
   .job-link
     display: flex
@@ -26,6 +28,37 @@
     > .name
       font-size: 24px
       font-weight: 700
-      color: #3567d2
+      color: $color1
+
     > i
       top: 7px
+
+  .filter-wrapper
+    .tab-list
+      display: flex
+      gap: 10px
+      border-bottom: 1px solid #ccc
+    .tab
+      padding: 5px 10px
+      transition: all ease 0.2s
+      border-style: solid
+      border-color: transparent
+      border-width: 0 0 2px 0
+      font-weight: 500
+      &.active,
+      &:hover
+        border-color: $color1
+        color: $color1
+
+  .pagination-wrapper
+    padding: 20px 0
+    .pagination-list
+      display: flex
+      gap: 10px
+    // .pagination-item
+    .page
+      width: 30px
+      height: 30px
+      text-align: center
+      border: 1px solid #ccc
+      line-height: 30px

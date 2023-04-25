@@ -1,0 +1,96 @@
+.user-component
+  padding: 60px 0
+  .layout-wrapper
+    display: flex
+    gap: 30px
+  .sidebar-wrapper
+    flex: 400px 0 0
+    padding-top: 37px
+  .sidebar
+    padding: 15px 25px
+    border: 1px solid #ccc
+    border-radius: 10px
+    box-shadow: 0 0 5px 3px #aaa
+
+  .profile-wrapper
+    display: flex
+    flex-direction: column
+    gap: 10px
+    margin-bottom: 20px
+    padding-bottom: 18px
+    font-size: 18px
+    border-bottom: 1px solid #ccc
+  .profile-item
+    display: flex
+    gap: 10px
+    label
+      margin-left: auto
+      cursor: pointer
+      color: #ebb208
+
+  .review-item
+    display: flex
+    flex-direction: column
+    align-items: start
+    gap: 5px
+    &:not(:last-child)
+      margin-bottom: 10px
+      padding-bottom: 10px
+      border-bottom: 1px solid #ccc
+    .name, .job
+      font-weight: 700
+      font-size: 18px
+    .job
+      color: $color1
+    .time
+      color: #888
+    .content
+      color: #555
+      text-align: justify
+      @include line-clamp(2)
+  .item-link,
+  .save-button,
+  .request-button
+    @include common-button
+  .item-link
+    font-size: 16px
+    font-weight: 400
+    span
+      margin-right: 8px
+  .save-button
+    margin-right: 10px
+
+  .main-content
+    width: 100%
+  .breadcrumb-wrapper
+    display: flex
+    gap: 10px
+    align-items: center
+    padding-bottom: 15px
+    color: #555
+    a
+      &:hover
+        text-decoration: underline
+      i
+        margin-right: 5px
+        color: $color1
+
+  .review-list-wrapper,
+  .vote-list-wrapper
+    border: 1px solid #3567d2
+    .title
+      display: flex
+      align-items: center
+      padding: 2px 15px
+      color: #fff
+      background-color: #3567d2
+      font-size: 22px
+      font-weight: 700
+      transition: opacity ease 0.2s
+      &:not(.no-link):hover
+        opacity: 0.9
+      i
+        margin-left: auto
+  .recent-review-list,
+  .recent-vote-list
+    padding: 15px

@@ -1,22 +1,31 @@
 .sidebar-component
   width: 100%
-  height: 500px
   padding: 0 15px
   .sidebar-title
     margin-bottom: 20px
     font-size: 32px
     font-weight: 700
+  .sidebar-info
+    margin-bottom: 20px
+    padding: 10px
+    color: #fff
+    background-color: #209cee
+    border-radius: 6px
+    text-align: justify
   .review-item
     margin-bottom: 10px
     padding-bottom: 10px
     border-bottom: 1px solid #eee
+  .top span
+    margin-right: 5px
   .name, .job
     font-weight: 700
     font-size: 18px
   .job
-    color: #3567d2
+    color: $color1
   .time
     color: #888
   .content
     color: #555
     text-align: justify
+    @include line-clamp(3)

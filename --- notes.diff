@@ -28,12 +28,47 @@ npm i axios
 - use json-server to fake API
 - install pinia
 npm install pinia
+- install country-list-json
+npm i country-list-json
+
+
+
+--- todos
+- sort and filter function
 
 
 
 --- prepare ideal
 - Pinia: state management
 - Vue Router 4: route management
-
 - cardboard
 - fadeout side (not in focus) element
+
+
+
+--- vote types
+- thích
+- không thích
+- kiến thức sâu
+- kinh nghiệm dày dặn
+- review nhảm
+- hoàn toàn sai lệch
+
+
+
+--- trang user
+- thông tin cơ bản
+- quản lý review
+- quản lý vote
+- request job mới
+- đăng xuất
+
+
+--- work w docker
+- start docker
+docker compose up
+- execute container if failed
+docker exec -it containerId bash
+- start postgres
+sudo -u postgres -i
+psql -U admin -d review_job
