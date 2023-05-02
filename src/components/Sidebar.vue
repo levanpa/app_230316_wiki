@@ -13,7 +13,7 @@
           span recently reviews about
           span.job Designer
         .time
-          span 21
+          span.number 21
           span minutes ago
         p.content Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis aliquam exercitationem ullam, eaque itaque, at deleniti saepe animi nihil totam error odio autem? Quod sequi hic unde sit odit et.
   

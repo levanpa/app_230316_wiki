@@ -30,11 +30,14 @@ npm i axios
 npm install pinia
 - install country-list-json
 npm i country-list-json
+- install vue notification
+npm i @kyvg/vue3-notification
 
 
 
 --- todos
 - sort and filter function
++ make notification
 
 
 

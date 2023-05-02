@@ -4,12 +4,13 @@ import type { Ref } from 'vue'
 import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import axios from 'axios'
 import * as dto from './dto'
+import { useNotification } from '@kyvg/vue3-notification'
 
 const route = useRoute()
 let breadcrumb: Ref<string> =
   route.meta.breadcrumb ? ref((route.meta.breadcrumb).toString()) : ref('')
-let isShowRules: Ref<boolean> =
-  route.path == '/user/new' ? ref(true) : ref(false)
+let isShowRules: Ref<boolean> = route.path == '/user/new' ? ref(true) : ref(false)
+const { notify } = useNotification()
 
 watch(() => route.meta, newMeta => {
   breadcrumb.value = newMeta.breadcrumb ? (newMeta.breadcrumb).toString() : ''
@@ -19,7 +20,12 @@ watch(() => route.path, newPath => {
   isShowRules.value = newPath == '/user/new' ? true : false
 })
 
-function saveProfile(event: Event) { }
+function saveProfile(event: Event) {
+  event.preventDefault()
+  notify({
+    text: 'Profile is saved successfully!',
+  })
+}
 </script>
 
 <template lang="pug">
