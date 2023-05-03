@@ -11,6 +11,10 @@ let breadcrumb: Ref<string> =
   route.meta.breadcrumb ? ref((route.meta.breadcrumb).toString()) : ref('')
 let isShowRules: Ref<boolean> = route.path == '/user/new' ? ref(true) : ref(false)
 const { notify } = useNotification()
+let nameInput: Ref<string> = ref('Nguyen Thi Bich Chi')
+let emailInput: Ref<string> = ref('lezinkkatory@gmail.com')
+let prevName: string = nameInput.value
+let prevEmail: string = emailInput.value
 
 watch(() => route.meta, newMeta => {
   breadcrumb.value = newMeta.breadcrumb ? (newMeta.breadcrumb).toString() : ''
@@ -22,9 +26,18 @@ watch(() => route.path, newPath => {
 
 function saveProfile(event: Event) {
   event.preventDefault()
-  notify({
-    text: 'Profile is saved successfully!',
-  })
+  if (prevName === nameInput.value && prevEmail === emailInput.value) {
+    notify({
+      text: 'Profile was not edited.',
+      type: 'warn'
+    })
+  } else {
+    notify({
+      text: 'Profile has been saved successfully!',
+    })
+    prevName = nameInput.value
+    prevEmail = emailInput.value
+  }
 }
 </script>
 
@@ -36,12 +49,12 @@ function saveProfile(event: Event) {
         .profile-wrapper
           .profile-item
             span.item-title Name:
-            input#name-input(placeholder="your name" value="Nguyen Thi Bich Chi")
+            input#name-input(placeholder="your name" v-model="nameInput")
             label(for="name-input")
               i.fa-regular.fa-pen-to-square
           .profile-item
             span.item-title Email:
-            input#email-input(placeholder="your email" value="lezinkkatory@gmail.com")
+            input#email-input(placeholder="your email" v-model="emailInput")
             label(for="email-input")
               i.fa-regular.fa-pen-to-square
           .profile-item
