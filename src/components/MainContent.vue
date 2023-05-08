@@ -25,6 +25,8 @@ function fetchData() {
 
 function changeTab(event: Event) {
   event.preventDefault()
+  document.querySelector('.tab-list .tab.active')?.classList.remove('active');
+  (event.target as HTMLButtonElement).classList.add('active')
   // todo: logic change tab
 }
 
@@ -47,22 +49,38 @@ function paginate(event: Event) {
       each i in Array(6)
         li.pagination-item
           button.page(@click="$event=>paginate($event)") 1
-  ul.job-list(v-if="jobs[0]")
-    li.job-item(v-for="item in jobs")
-      router-link.job-link(:to="'/detail/' + item.job_id")
-        img.job-image(:src="item.img", :alt="item.name")
-        .job-info
-          .job-name.has-icon
-            i.fa-solid.fa-briefcase
-            span.name {{ item.name }}
-            span.count ({{ item.review_counter }})
-          .job-location.has-icon
-            i.fa-solid.fa-location-dot
-            span {{ item.location }}
-          .job-field.has-icon
-            i.fa-regular.fa-map
-            span {{ item.category }}
-  p(v-else) There are no jobs
+  //- ul.job-list(v-if="jobs[0]")
+  //-   li.job-item(v-for="item in jobs")
+  //-     router-link.job-link(:to="'/detail/' + item.job_id")
+  //-       img.job-image(:src="item.img", :alt="item.name")
+  //-       .job-info
+  //-         .job-name.has-icon
+  //-           i.fa-solid.fa-briefcase
+  //-           span.name {{ item.name }}
+  //-           span.count ({{ item.review_counter }})
+  //-         .job-location.has-icon
+  //-           i.fa-solid.fa-location-dot
+  //-           span {{ item.location }}
+  //-         .job-field.has-icon
+  //-           i.fa-regular.fa-map
+  //-           span {{ item.category }}
+  //- p(v-else) There are no jobs
+  ul.job-list
+    each i in Array(5)
+      li.job-item
+        router-link.job-link(:to="'/detail/example'")
+          img.job-image(src="" alt="")
+          .job-info
+            .job-name.has-icon
+              i.fa-solid.fa-briefcase
+              span.name shdfiskdjfhksjdhfa.md.as d;alkd
+              span.count (25)
+            .job-location.has-icon
+              i.fa-solid.fa-location-dot
+              span shdfiskdjfhksjdhf
+            .job-field.has-icon
+              i.fa-regular.fa-map
+              span shdfiskdjfhksjdhf alj sdlka 
   .pagination-wrapper
     ul.pagination-list
       each i in Array(6)

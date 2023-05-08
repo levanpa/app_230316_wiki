@@ -1,20 +1,19 @@
 <script setup lang="ts">
 import CommonList from '../CommonList.vue'
-let listReviewData = {
-  name: 'You',
-  text: 'recently reviews about',
+let listReportData = {
+  name: 'Tran Nguyen Thanh Tu',
+  text: 'reported about this review in',
   job: 'Designer',
-  hasContent: true
 }
 </script>
 
 <template lang="pug">
-.user-default-component
+.admin-default-component
   .user-list-frame
     .title
-      h3 Recently reviews
+      h3 New reports
       i.fa-solid.fa-angles-right
-    CommonList(:data="listReviewData" :options="{ hasContent: true, limit: 8 }")
+    CommonList(:data="listReportData" :options="{ hasContent: true, limit: 8 }")
 </template>
 
 <style lang="sass">

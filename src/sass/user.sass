@@ -20,6 +20,9 @@
     padding-bottom: 18px
     font-size: 18px
     border-bottom: 1px solid #ccc
+  .profile-title
+    font-weight: bold
+    font-size: 20px
   .profile-item
     display: flex
     gap: 10px
@@ -27,30 +30,9 @@
       margin-left: auto
       cursor: pointer
       color: #ebb208
-
-  .review-item
-    display: flex
-    flex-direction: column
-    align-items: start
-    gap: 5px
-    &:not(:last-child)
-      margin-bottom: 10px
-      padding-bottom: 10px
-      border-bottom: 1px solid #ccc
-    .top span
-      margin-right: 5px
-    .name, .job
+    .bold
       font-weight: 700
-      font-size: 18px
-    .job
-      color: $color1
-    .time span
-      margin-right: 5px
-      color: #888
-    .content
-      color: #555
-      text-align: justify
-      @include line-clamp(2)
+
   .item-link,
   .save-button,
   .request-button
@@ -78,8 +60,8 @@
         margin-right: 5px
         color: $color1
 
-  .review-list-wrapper,
-  .vote-list-wrapper
+  .user-list-frame
+    margin-bottom: 30px
     border: 1px solid #3567d2
     .title
       display: flex
@@ -90,10 +72,7 @@
       font-size: 22px
       font-weight: 700
       transition: opacity ease 0.2s
-      &:not(.no-link):hover
-        opacity: 0.9
       i
         margin-left: auto
-  .recent-review-list,
-  .recent-vote-list
-    padding: 15px
+    a.title:hover
+      opacity: 0.9
