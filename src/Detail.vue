@@ -59,7 +59,6 @@ function fetchData() {
     // }
     axios.get(`http://localhost:3000/reviews?job_id=${jobId}`, {
     }).then((response) => {
-      console.log('response.data', response.data)
       reviews.value = response.data
       reviews.value && reviewStore.add(reviews.value)
     })
@@ -71,20 +70,19 @@ function changeVisibility(event: Event) {
   isShowNewReview.value = !isShowNewReview.value
 }
 
-function like(reviewID: number) {
-  // let currentLike: number | undefined = reviews.value.find(item => item.id == reviewID)?.like
-  // if (!currentLike) {
-  //   console.log('ko tim thay so like')
-  //   return
-  // }
-  // console.log('currentLike', currentLike)
-  // axios.post(`http://localhost:3003/reviews/${reviewID}`, {
-  //   like: 193
-  // }).then((response) => {
-  //   console.log('like thanh cong', response)
-  // }).catch((error) => {
-  //   console.log(error)
-  // })
+function vote(event: Event, reviewID: number, type: string) {
+  event.preventDefault()
+  let review: dto.reviewDto | undefined = reviews.value.find(item => item.id == reviewID)
+  if (review?.[type]) {
+    review[type]++
+  } else {
+    console.log('ko tim thay so vote')
+    return
+  }
+
+  axios.put(`http://localhost:3000/reviews/${reviewID}`, review).catch((error) => {
+    console.log(error.message)
+  })
 }
 </script>
 
@@ -135,10 +133,10 @@ function like(reviewID: number) {
           span.time {{ formattedDate(item.created || 0) }}
         p.content {{ item.content }}
         .bottom
-          button.like(@click="$event => like(item.id)")
+          button.like(@click="$event => vote($event, item.id, 'like')")
             i.fa-regular.fa-thumbs-up
             span.number {{ item.like }}
-          button.dislike
+          button.dislike(@click="$event => vote($event, item.id, 'dislike')")
             i.fa-regular.fa-thumbs-down
             span.number {{ item.dislike }}
     p(v-else) There are no reviews.
