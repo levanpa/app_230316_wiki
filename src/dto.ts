@@ -6,6 +6,7 @@ export type reviewDto = {
   dislike: number,
   job_id: string,
   created?: number,
+  experience?: string
 }
 export type jobDto = {
   id?: string,

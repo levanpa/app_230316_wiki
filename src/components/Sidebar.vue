@@ -1,24 +1,24 @@
 <script setup lang="ts">
+import CommonList from './CommonList.vue'
+let listRecentlyData = {
+  name: 'Trần Nguyễn Thanh Tú',
+  text: 'recently reviews about',
+  job: 'Designer',
+}
 </script>
 
 <template lang="pug">
 .sidebar-component
   p.sidebar-title Recently reviews
   p.sidebar-info Các review có thể mang tính chủ quan. Hãy xem những review này như là nhận xét, trải nghiệm, đánh giá của những người đã có kinh nghiệm.
-  ul.recent-review-list
-    each i in Array(3)
-      li.review-item
-        .top
-          span.name Trần Nguyễn Thanh Tú
-          span recently reviews about
-          span.job Designer
-        .time
-          span.number 21
-          span minutes ago
-        p.content Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis aliquam exercitationem ullam, eaque itaque, at deleniti saepe animi nihil totam error odio autem? Quod sequi hic unde sit odit et.
-  
+  CommonList(:data="listRecentlyData" :options="{ hasContent: true }")
 </template>
 
 <style lang="sass">
 @import "/src/sass/sidebar"
+</style>
+
+<style lang="sass" scoped>
+.common-list-component
+  padding: 0
 </style>

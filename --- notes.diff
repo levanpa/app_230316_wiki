@@ -39,6 +39,10 @@ npm i @kyvg/vue3-notification
 - sort and filter function
 + make notification
 - admin page
+- pagination
+- authentication
+- loading state of component
+- responsive
 
 
 

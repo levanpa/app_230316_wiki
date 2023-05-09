@@ -13,7 +13,7 @@ defineEmits(['change-visibility', 'post-review'])
 </script>
 
 <template lang="pug">
-.new-review-component.is-show
+.new-review-component(:class="{ 'is-show': isShow }")
   .text-area
     .options
       .experience

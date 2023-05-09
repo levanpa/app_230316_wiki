@@ -36,7 +36,7 @@ function suggest(event: Event, type: string) {
         li.suggest-item UI/UX Designer
         li.suggest-item Architectural Designer
         li.suggest-item Lead Designer
-  NewReview(:isShow="true" @post-review="postReview")
+  NewReview.is-user-new(:isShow="true" @post-review="postReview")
 </template>
 
 <style lang="sass">
@@ -78,16 +78,16 @@ function suggest(event: Event, type: string) {
       &:hover
         background-color: #fff4e9
 
-.new-review-component.is-show
+.new-review-component.is-user-new
   display: block
   max-height: unset !important
   .text-area
     width: 100%
     padding-right: 25px
-  .rules
-    display: none
+  .rules,
   .cancel-button
     display: none
+
 .rules
   flex-basis: 40%
   padding-top: 25px
