@@ -58,10 +58,9 @@ function paginate(event: Event) {
           .job-name.has-icon
             i.fa-solid.fa-briefcase
             span.name {{ item.name }}
-            span.count ({{ item.review_counter }} reviews)
           .job-location.has-icon
             i.fa-solid.fa-location-dot
-            span {{ item.location }}
+            span {{ item.review_counter }} reviews
           .job-field.has-icon
             i.fa-regular.fa-map
             span {{ item.category }}

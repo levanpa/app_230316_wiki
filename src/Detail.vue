@@ -7,6 +7,8 @@ import * as dto from './dto'
 import { useJobsStore } from './stores/jobs'
 import { useReviewsStore } from './stores/reviews'
 import NewReview from './components/NewReview.vue'
+import { useNotification } from '@kyvg/vue3-notification'
+import { countries } from 'country-list-json'
 
 const route = useRoute()
 let jobStore = useJobsStore()
@@ -15,28 +17,43 @@ let reviews: Ref<dto.reviewDto[]> = ref([])
 let tempReviews: dto.reviewDto[] | undefined
 let job: Ref<dto.jobDto | undefined> = ref()
 let tempJob: dto.jobDto[] | undefined
-const jobId: string = (route.params.id).toString()
+const jobId: number = parseInt((route.params.id).toString(), 10)
 let isShowNewReview: Ref<boolean> = ref(false)
+const { notify } = useNotification()
+
+fetchData()
 
 function formattedDate(date: number): string {
   const options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
   }
   return new Intl.DateTimeFormat('vi-VN', options).format(date)
 }
 
-fetchData()
+function getExperienceText(exp: number): string {
+  let years: number = Math.floor(exp / 365)
+  let months: number = Math.floor((exp % 365) / 30)
+  let days: number = (exp % 365) % 30
+  let result: string = ''
+  result += years > 0 ? `${years} years ` : ''
+  result += months > 0 ? `${months} months ` : ''
+  result += days > 0 ? `${days} days` : ''
+  return result.trim() || '0'
+}
+function getCountryName(code: string): string {
+  const target = countries.find((item) => item.code == code)
+  return target?.name || 'nowhere'
+}
 
 function fetchData() {
   // check if there is data in store
   tempJob = jobStore.get(jobId)
   if (tempJob && tempJob[0]) {
-    console.log('data from store')
+    console.log('fetched data from store')
     job.value = tempJob[0]
   } else {
     axios.get(`http://localhost:3000/jobs/${jobId}`).then((response) => {
@@ -63,17 +80,13 @@ function fetchData() {
       reviews.value && reviewStore.add(reviews.value)
     })
   }
-}
 
-function changeVisibility(event: Event) {
-  event.preventDefault()
-  isShowNewReview.value = !isShowNewReview.value
 }
 
 function vote(event: Event, reviewID: number, type: string) {
   event.preventDefault()
   let review: dto.reviewDto | undefined = reviews.value.find(item => item.id == reviewID)
-  if (review?.[type]) {
+  if (review?.[type] || review?.[type] == 0) {
     review[type]++
   } else {
     console.log('ko tim thay so vote')
@@ -83,6 +96,40 @@ function vote(event: Event, reviewID: number, type: string) {
   axios.put(`http://localhost:3000/reviews/${reviewID}`, review).catch((error) => {
     console.log(error.message)
   })
+}
+
+// todo: finish this
+function reportReview(event: Event, reviewID: number) {
+  event.preventDefault()
+  console.log('building reportReview...')
+}
+
+// todo: finish this
+function subscribe(event: Event) {
+  event.preventDefault()
+}
+
+// emits
+function changeVisibility(event: Event) {
+  event.preventDefault()
+  isShowNewReview.value = !isShowNewReview.value
+}
+
+function postReview(data: dto.reviewDto) {
+  reviewStore.add([data])
+  tempReviews = reviewStore.get(jobId)
+  if (tempReviews && tempReviews[0]) {
+    reviews.value = tempReviews
+    notify({
+      text: 'Your review has been published.',
+    })
+
+  } else {
+    notify({
+      text: 'Can not update review list.',
+      type: 'warn'
+    })
+  }
 }
 </script>
 
@@ -95,10 +142,9 @@ function vote(event: Event, reviewID: number, type: string) {
         .job-name.has-icon
           i.fa-solid.fa-briefcase
           span.name {{ job.name }}
-          span.count ({{ job.review_counter }})
         .job-location.has-icon
           i.fa-solid.fa-location-dot
-          span {{ job.location }}
+          span {{ job.review_counter }} reviews
         .job-field.has-icon
           i.fa-regular.fa-map
           span {{ job.category }}
@@ -106,7 +152,7 @@ function vote(event: Event, reviewID: number, type: string) {
         button.write-review(@click="$event=>changeVisibility($event)") Write review
         button.subscribe Subscribe for notifications
     //- todo: v-else
-    NewReview(:isShow="isShowNewReview" @change-visibility="changeVisibility")
+    NewReview(:isShow="isShowNewReview" :jobId="jobId" @change-visibility="changeVisibility" @post-review="postReview")
 
     .sort-filter-wrapper
       .sort-wrapper
@@ -129,16 +175,23 @@ function vote(event: Event, reviewID: number, type: string) {
       li.review-item(v-for="item in reviews")
         .top
           h3.name {{ item.name }}
-          span ({{ item.experience }} kinh nghiệm)
           span.time {{ formattedDate(item.created || 0) }}
-        p.content {{ item.content }}
+        .middle
+          .info-wrapper
+            p {{ getExperienceText(item.experience) }} kinh nghiệm
+            p worked at {{ getCountryName(item.location) }}
+          p.content {{ item.content }}
         .bottom
-          button.like(@click="$event => vote($event, item.id, 'like')")
-            i.fa-regular.fa-thumbs-up
-            span.number {{ item.like }}
-          button.dislike(@click="$event => vote($event, item.id, 'dislike')")
-            i.fa-regular.fa-thumbs-down
-            span.number {{ item.dislike }}
+          .button-wrapper
+            button.like(@click="$event => vote($event, item.id || 0, 'like')")
+              i.fa-regular.fa-thumbs-up
+              span.number {{ item.like }}
+            button.dislike(@click="$event => vote($event, item.id || 0, 'dislike')")
+              i.fa-regular.fa-thumbs-down
+              span.number {{ item.dislike }}
+            button.report(@click="$event => reportReview($event, item.id || 0)")
+              i.fa-solid.fa-triangle-exclamation
+
     p(v-else) There are no reviews.
 
 </template>

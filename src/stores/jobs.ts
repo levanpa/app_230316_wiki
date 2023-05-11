@@ -14,7 +14,7 @@ export const useJobsStore = defineStore('jobs', () => {
     })
   }
 
-  function get(id: string | null = null): dto.jobDto[] | undefined {
+  function get(id: number | null = null): dto.jobDto[] | undefined {
     if (id) {
       return jobs.value.filter(job => job.id === id)
     } else {

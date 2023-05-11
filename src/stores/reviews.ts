@@ -7,7 +7,6 @@ export const useReviewsStore = defineStore('reviews', () => {
   let reviews: Ref<dto.reviewDto[]> = ref([])
 
   function add(inputReviews: dto.reviewDto[]) {
-    reviews.value.push(...inputReviews)
     inputReviews.map(review => {
       if (!reviews.value.includes(review)) {
         reviews.value.push(review)
@@ -15,7 +14,7 @@ export const useReviewsStore = defineStore('reviews', () => {
     })
   }
 
-  function get(jobId: string): dto.reviewDto[] | undefined {
+  function get(jobId: number): dto.reviewDto[] | undefined {
     return reviews.value.filter(review => review.job_id === jobId)
   }
 

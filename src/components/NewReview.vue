@@ -1,15 +1,45 @@
 <script setup lang="ts">
+import { ref, reactive } from 'vue'
+import type { Ref } from 'vue'
 import { countries } from 'country-list-json'
-defineProps<{
-  isShow: boolean
+import axios from 'axios'
+import * as dto from '../dto'
+// import { useReviewsStore } from '../stores/reviews'
+
+const props = defineProps<{
+  isShow: boolean,
+  jobId: number
 }>()
 
-defineEmits(['change-visibility', 'post-review'])
+const emit = defineEmits(['change-visibility', 'post-review'])
 
-// function cancelReview(event: Event) {
-//   event.preventDefault()
+let data: dto.reviewDto = reactive({
+  name: '',
+  content: '',
+  location: 'VN',
+  like: 0,
+  dislike: 0,
+  job_id: 0,
+  created: 0,
+  experience: 0,
+})
+let experienceNumber: Ref<number> = ref(1)
+let experienceUnit: Ref<number> = ref(365)
 
-// }
+function postReview(event: Event) {
+  event.preventDefault()
+  data.job_id = props.jobId
+  data.name = 'ten cua user'
+  data.experience = experienceNumber.value * experienceUnit.value
+  data.created = Date.now()
+
+  axios.post(`http://localhost:3000/reviews/`, data).then((response) => {
+    emit('post-review', response.data)
+    experienceNumber = 1
+    experienceUnit = 365
+    data.content = ''
+  })
+}
 </script>
 
 <template lang="pug">
@@ -18,19 +48,19 @@ defineEmits(['change-visibility', 'post-review'])
     .options
       .experience
         span.title Experience: 
-        input.experience-number(type="number")
-        select
-          option(value="year" selected) years
-          option(value="month") months
-          option(value="day") days
+        input.experience-number(type="number" v-model.number="experienceNumber")
+        select(v-model="experienceUnit")
+          option(value="365" selected) years
+          option(value="30") months
+          option(value="1") days
       .location
         span.title Location:
-        select
+        select(v-model="data.location")
           option(v-for="item in countries" :value="item.code" :selected="item.code == 'VN'") {{item.name}}
-    textarea.review-content(placeholder="Write your review here")
+    textarea.review-content(v-model="data.content" placeholder="Write your review here")
     .button-wrapper
       button.cancel-button(@click="$event => $emit('change-visibility', $event)") Cancel
-      button.submit-button(@click="$event => $emit('post-review', $event)") Post this review
+      button.submit-button(@click="$event => postReview($event)") Post this review
   .rules
     .rule-wrapper
       h3.rule-title Rules and recommendations

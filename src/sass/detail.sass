@@ -1,5 +1,5 @@
 .detail-component
-  padding-top: 40px
+  padding: 50px 0
   .job-item
     display: flex
     margin-bottom: 30px
@@ -21,7 +21,7 @@
     > .name
       margin-right: 5px
       font-size: 24px
-      font-weight: 700
+      font-weight: 600
       color: $color1
     > i
       top: 7px
@@ -35,46 +35,68 @@
 
   // .review-list
   .review-item
-    margin-bottom: 20px
-    padding: 15px 20px
-    border: 1px solid #bbb
+    margin-bottom: 30px
     border-radius: 10px
+    border: 1px solid #bbb
+    filter: drop-shadow(0 3px 3px #92a3d7)
     .top
       display: flex
       align-items: center
-      margin-bottom: 5px
+      padding: 5px 20px
+      background-color: #f5f5f5
+      border-top-left-radius: 10px
+      border-top-right-radius: 10px
     .name
       display: inline-block
       margin-right: 5px
       font-size: 20px
-      font-weight: 600
+      font-weight: 700
     .time
       margin-left: auto
-    .content
-      padding: 10px 0
-      text-align: justify
-      color: #333
+      color: #666
+
+    .middle
+      display: flex
+      gap: 15px
+      padding: 10px 20px
+      background-color: #fff
       border-top: 1px solid #bbb
       border-bottom: 1px solid #bbb
+    .info-wrapper
+      min-width: 180px
+      max-width: 240px
+      color: #666
+    .content
+      flex-basis: 100%
+      padding-left: 15px
+      text-align: justify
+      color: #333
+      border-left: 1px solid #bbb
+
     .bottom
       display: flex
       gap: 20px
-      padding-top: 10px
-      > button
+      padding: 10px 20px
+      background-color: #f5f5f5
+      border-bottom-left-radius: 10px
+      border-bottom-right-radius: 10px
+      button
         display: inline-flex
         align-items: center
-        gap: 8px
-        padding: 4px 8px
+        gap: 10px
+        padding: 4px 10px
         border-radius: 50px
         transition: background-color ease 0.2s
         &:hover
-          background-color: #e7eef7
+          background-color: #fff
       i
         font-size: 24px
     .like i
       color: #19c819
     .dislike i
-      color: #ca4040
+      color: #1184ff
+    .report i
+      color: #e32525
 
   .sort-filter-wrapper
     display: flex

@@ -43,7 +43,10 @@ npm i @kyvg/vue3-notification
 - authentication
 - loading state of component
 - responsive
-
+- subscribe function
+- request new job
++ post new review
+- report a review, notify, manage, admin handling
 
 
 --- prepare ideal
