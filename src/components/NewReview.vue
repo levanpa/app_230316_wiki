@@ -6,9 +6,8 @@ import axios from 'axios'
 import * as dto from '../dto'
 // import { useReviewsStore } from '../stores/reviews'
 
-const props = defineProps<{
+defineProps<{
   isShow: boolean,
-  jobId: number
 }>()
 
 const emit = defineEmits(['change-visibility', 'post-review'])
@@ -28,18 +27,17 @@ let experienceUnit: Ref<number> = ref(365)
 
 function postReview(event: Event) {
   event.preventDefault()
-  data.job_id = props.jobId
   data.name = 'ten cua user'
   data.experience = experienceNumber.value * experienceUnit.value
   data.created = Date.now()
-
-  axios.post(`http://localhost:3000/reviews/`, data).then((response) => {
-    emit('post-review', response.data)
-    experienceNumber = 1
-    experienceUnit = 365
-    data.content = ''
-  })
+  emit('post-review', data)
+  experienceNumber.value = 1
+  experienceUnit.value = 365
 }
+
+defineExpose({
+  data
+})
 </script>
 
 <template lang="pug">
@@ -59,7 +57,7 @@ function postReview(event: Event) {
           option(v-for="item in countries" :value="item.code" :selected="item.code == 'VN'") {{item.name}}
     textarea.review-content(v-model="data.content" placeholder="Write your review here")
     .button-wrapper
-      button.cancel-button(@click="$event => $emit('change-visibility', $event)") Cancel
+      button.cancel-button(@click="$emit('change-visibility')") Cancel
       button.submit-button(@click="$event => postReview($event)") Post this review
   .rules
     .rule-wrapper

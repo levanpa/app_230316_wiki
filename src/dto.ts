@@ -1,4 +1,4 @@
-export type reviewDto = {
+export interface reviewDto {
   id?: number,
   name: string,
   content: string,
@@ -10,7 +10,7 @@ export type reviewDto = {
   experience?: number,
   [key: string]: any
 }
-export type jobDto = {
+export interface jobDto {
   id?: number,
   name: string,
   img: string,
@@ -18,7 +18,7 @@ export type jobDto = {
   category: number,
   created?: number,
 }
-export type categoryDto = {
+export interface categoryDto {
   id?: number,
   name: string,
   job_counter: number,

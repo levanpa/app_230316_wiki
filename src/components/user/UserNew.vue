@@ -1,41 +1,101 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import type { Ref } from 'vue'
 import NewReview from '../NewReview.vue'
+import axios from 'axios'
+import * as dto from '../../dto'
+import { useNotification } from '@kyvg/vue3-notification'
+import { useRouter } from 'vue-router'
 
-
+const router = useRouter()
 let isShowSuggest: Ref<boolean> = ref(false)
+let jobName: Ref<string> = ref('')
+let jobField: Ref<string> = ref('')
+let editing: string
+const { notify } = useNotification()
+interface simpleJobInterface {
+  id: number | undefined
+  name: string
+}
+let suggestedJobList = reactive<simpleJobInterface[]>([{ id: 0, name: '' }])
+
+console.log()
+init()
 
 // post new review for new job
-function postReview() {
+function postReview(reviewData: dto.reviewDto) {
+  // create new job
+  let job: dto.jobDto = {
+    name: jobName.value,
+    img: '',
+    review_counter: 1,
+    category: 0,
+    created: Date.now(),
+  }
+  axios.post(`http://localhost:3000/jobs/`, job).then((response) => {
+    notify({
+      text: 'Created new job successfully!',
+    })
+    // create new review
+    reviewData.job_id = response.data.id
+    axios.post(`http://localhost:3000/reviews/`, reviewData).then((response) => {
+      notify({
+        text: 'Created new review successfully!',
+      })
+      // navigate to jo detail page
+      router.push({ path: `/detail/${reviewData.job_id}` })
+    })
+  })
+}
 
+function selectSuggest(item: simpleJobInterface) {
+  if (editing == 'jobName') {
+    jobName.value = item.name
+  } else if (editing == 'jobField') {
+    jobField.value = item.name
+  }
 }
-// suggest Job/Field
-function suggest(event: Event, type: string) {
-  event.preventDefault()
-  let input: HTMLInputElement = event.target as HTMLInputElement
-  isShowSuggest.value = input.value.length > 2 ? true : false
+
+watch(jobName, (newValue: string) => {
+  isShowSuggest.value = newValue?.length > 2 ? true : false
+
+})
+watch(jobField, (newValue: string) => {
+  isShowSuggest.value = newValue?.length > 2 ? true : false
+})
+
+function getJobList() {
+  axios.get(`http://localhost:3000/jobs/`).then((response) => {
+    if (response && response.data) {
+      let result: dto.jobDto[] = response.data
+      suggestedJobList = result.map(({ id, name }) => ({ id, name }))
+    }
+  }).catch(error => console.log(error))
 }
+
+function init() {
+  getJobList()
+}
+
 </script>
 
 <template lang="pug">
 .user-new-component
   .job-wrapper
     .row.job-name
-      span.title Job name: 
-      input(type="text" placeholder="Job name" @input="$event => suggest($event, 'job')")
+      span.title Job name:
+      input(type="text" v-model="jobName" placeholder="Job name" @focus="editing = 'jobName'" @focusout="isShowSuggest = false")
     .row.job-field
       span.title Job field: 
-      input(type="text" placeholder="Job field" @input="$event => suggest($event, 'filed')")
+      input(type="text" v-model="jobField" placeholder="Job field" @focus="editing = 'jobField'" @focusout="isShowSuggest = false")
+
     //- only show when typing at least 3 chars
     .suggest-wrapper(v-show="isShowSuggest")
-      p.suggest-title Suggested results
+      h3.suggest-title
+        i.fa-regular.fa-circle-xmark(@click="isShowSuggest = false")
+        span Suggested results
       ul.suggest-list
-        li.suggest-item Designer
-        li.suggest-item Graphic Designer
-        li.suggest-item UI/UX Designer
-        li.suggest-item Architectural Designer
-        li.suggest-item Lead Designer
+        li.suggest-item(v-for="item in suggestedJobList" :job-id="item.id" @click="selectSuggest(item)") {{ item.name }}
   NewReview.is-user-new(:isShow="true" @post-review="postReview")
 </template>
 
@@ -69,6 +129,15 @@ function suggest(event: Event, type: string) {
       font-weight: 700
       font-size: 20px
       border-bottom: 1px solid #333
+      i
+        margin-right: 8px
+        margin-bottom: 8px
+        cursor: pointer
+        font-size: 20px
+        transition: all ease 0.2s
+        &:hover
+          scale: 1.1
+          color: #e30000
     .suggest-item
       margin: 2px 0
       padding: 4px

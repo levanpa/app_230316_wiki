@@ -9,7 +9,8 @@ export const useReviewsStore = defineStore('reviews', () => {
   function add(inputReviews: dto.reviewDto[]) {
     inputReviews.map(review => {
       if (!reviews.value.includes(review)) {
-        reviews.value.push(review)
+        reviews.value.push({ ...review })
+        console.log('after add store', reviews.value)
       }
     })
   }

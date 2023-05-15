@@ -44,6 +44,7 @@ function getExperienceText(exp: number): string {
   result += days > 0 ? `${days} days` : ''
   return result.trim() || '0'
 }
+
 function getCountryName(code: string): string {
   const target = countries.find((item) => item.code == code)
   return target?.name || 'nowhere'
@@ -110,24 +111,41 @@ function subscribe(event: Event) {
 }
 
 // emits
-function changeVisibility(event: Event) {
-  event.preventDefault()
+function changeVisibility() {
   isShowNewReview.value = !isShowNewReview.value
 }
 
 function postReview(data: dto.reviewDto) {
-  reviewStore.add([data])
-  tempReviews = reviewStore.get(jobId)
-  if (tempReviews && tempReviews[0]) {
-    reviews.value = tempReviews
-    notify({
-      text: 'Your review has been published.',
-    })
+  data.job_id = jobId
+  axios.post(`http://localhost:3000/reviews/`, data).then((response) => {
+    reviewStore.add([data])
+    updateReviewList()
+    updateReviewCount()
+    changeVisibility()
+    data.content = ''
+  })
 
-  } else {
-    notify({
-      text: 'Can not update review list.',
-      type: 'warn'
+  function updateReviewList() {
+    tempReviews = reviewStore.get(jobId)
+    if (tempReviews && tempReviews[0]) {
+      reviews.value = tempReviews
+      notify({
+        text: 'Your review has been published.',
+      })
+    } else {
+      notify({
+        text: 'Can not update review list.',
+        type: 'warn'
+      })
+    }
+  }
+
+  function updateReviewCount() {
+    if (job.value?.review_counter) {
+      job.value.review_counter++
+    }
+    axios.put(`http://localhost:3000/jobs/${jobId}`, job.value).then(() => {
+      console.log('updated review counter')
     })
   }
 }
@@ -149,10 +167,10 @@ function postReview(data: dto.reviewDto) {
           i.fa-regular.fa-map
           span {{ job.category }}
       .actions
-        button.write-review(@click="$event=>changeVisibility($event)") Write review
+        button.write-review(@click="changeVisibility()") Write review
         button.subscribe Subscribe for notifications
     //- todo: v-else
-    NewReview(:isShow="isShowNewReview" :jobId="jobId" @change-visibility="changeVisibility" @post-review="postReview")
+    NewReview(:isShow="isShowNewReview" @change-visibility="changeVisibility" @post-review="postReview")
 
     .sort-filter-wrapper
       .sort-wrapper
@@ -178,7 +196,7 @@ function postReview(data: dto.reviewDto) {
           span.time {{ formattedDate(item.created || 0) }}
         .middle
           .info-wrapper
-            p {{ getExperienceText(item.experience) }} kinh nghiệm
+            p {{ getExperienceText(item.experience || 0) }} kinh nghiệm
             p worked at {{ getCountryName(item.location) }}
           p.content {{ item.content }}
         .bottom

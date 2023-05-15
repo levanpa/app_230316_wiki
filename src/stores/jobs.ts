@@ -9,7 +9,7 @@ export const useJobsStore = defineStore('jobs', () => {
   function add(inputJobs: dto.jobDto[]) {
     inputJobs.map(job => {
       if (!jobs.value.includes(job)) {
-        jobs.value.push(job)
+        jobs.value.push({ ...job })
       }
     })
   }
