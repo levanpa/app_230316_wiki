@@ -7,8 +7,8 @@ import * as dto from './dto'
 import { useJobsStore } from './stores/jobs'
 import { useReviewsStore } from './stores/reviews'
 import NewReview from './components/NewReview.vue'
+import ReviewList from './components/ReviewList.vue'
 import { useNotification } from '@kyvg/vue3-notification'
-import { countries } from 'country-list-json'
 
 const route = useRoute()
 let jobStore = useJobsStore()
@@ -22,33 +22,6 @@ let isShowNewReview: Ref<boolean> = ref(false)
 const { notify } = useNotification()
 
 fetchData()
-
-function formattedDate(date: number): string {
-  const options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-  }
-  return new Intl.DateTimeFormat('vi-VN', options).format(date)
-}
-
-function getExperienceText(exp: number): string {
-  let years: number = Math.floor(exp / 365)
-  let months: number = Math.floor((exp % 365) / 30)
-  let days: number = (exp % 365) % 30
-  let result: string = ''
-  result += years > 0 ? `${years} years ` : ''
-  result += months > 0 ? `${months} months ` : ''
-  result += days > 0 ? `${days} days` : ''
-  return result.trim() || '0'
-}
-
-function getCountryName(code: string): string {
-  const target = countries.find((item) => item.code == code)
-  return target?.name || 'nowhere'
-}
 
 function fetchData() {
   // check if there is data in store
@@ -84,27 +57,6 @@ function fetchData() {
 
 }
 
-function vote(event: Event, reviewID: number, type: string) {
-  event.preventDefault()
-  let review: dto.reviewDto | undefined = reviews.value.find(item => item.id == reviewID)
-  if (review?.[type] || review?.[type] == 0) {
-    review[type]++
-  } else {
-    console.log('ko tim thay so vote')
-    return
-  }
-
-  axios.put(`http://localhost:3000/reviews/${reviewID}`, review).catch((error) => {
-    console.log(error.message)
-  })
-}
-
-// todo: finish this
-function reportReview(event: Event, reviewID: number) {
-  event.preventDefault()
-  console.log('building reportReview...')
-}
-
 // todo: finish this
 function subscribe(event: Event) {
   event.preventDefault()
@@ -118,7 +70,7 @@ function changeVisibility() {
 function postReview(data: dto.reviewDto) {
   data.job_id = jobId
   axios.post(`http://localhost:3000/reviews/`, data).then((response) => {
-    reviewStore.add([data])
+    reviewStore.add([response.data])
     updateReviewList()
     updateReviewCount()
     changeVisibility()
@@ -188,30 +140,7 @@ function postReview(data: dto.reviewDto) {
           option(value="1") Useful reviews only
           option(value="2") Not useful reviews only
       button.apply-button Apply
-
-    ul.review-list(v-if="reviews[0]")
-      li.review-item(v-for="item in reviews")
-        .top
-          h3.name {{ item.name }}
-          span.time {{ formattedDate(item.created || 0) }}
-        .middle
-          .info-wrapper
-            p {{ getExperienceText(item.experience || 0) }} kinh nghiệm
-            p worked at {{ getCountryName(item.location) }}
-          p.content {{ item.content }}
-        .bottom
-          .button-wrapper
-            button.like(@click="$event => vote($event, item.id || 0, 'like')")
-              i.fa-regular.fa-thumbs-up
-              span.number {{ item.like }}
-            button.dislike(@click="$event => vote($event, item.id || 0, 'dislike')")
-              i.fa-regular.fa-thumbs-down
-              span.number {{ item.dislike }}
-            button.report(@click="$event => reportReview($event, item.id || 0)")
-              i.fa-solid.fa-triangle-exclamation
-
-    p(v-else) There are no reviews.
-
+    ReviewList(:data="reviews")
 </template>
 
 <style lang="sass">

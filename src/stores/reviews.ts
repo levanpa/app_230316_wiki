@@ -10,7 +10,6 @@ export const useReviewsStore = defineStore('reviews', () => {
     inputReviews.map(review => {
       if (!reviews.value.includes(review)) {
         reviews.value.push({ ...review })
-        console.log('after add store', reviews.value)
       }
     })
   }
