@@ -2,9 +2,7 @@
 import { ref, reactive } from 'vue'
 import type { Ref } from 'vue'
 import { countries } from 'country-list-json'
-import axios from 'axios'
 import * as dto from '../dto'
-// import { useReviewsStore } from '../stores/reviews'
 
 defineProps<{
   isShow: boolean,

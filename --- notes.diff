@@ -46,8 +46,11 @@ npm i @kyvg/vue3-notification
 - subscribe function
 + request new job
 + post new review
-- report a review, notify, manage, admin handling
++ report a review, notify
 + suggest function
+- 404 page
+- user management
+- admin management
 
 
 --- prepare ideal

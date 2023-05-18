@@ -140,7 +140,7 @@ function postReview(data: dto.reviewDto) {
           option(value="1") Useful reviews only
           option(value="2") Not useful reviews only
       button.apply-button Apply
-    ReviewList(:data="reviews")
+    ReviewList(:data="reviews" :jobId="jobId")
 </template>
 
 <style lang="sass">

@@ -24,3 +24,10 @@ export interface categoryDto {
   job_counter: number,
   created?: number,
 }
+export interface reportDto {
+  id?: number,
+  job_id: number,
+  review_id: number,
+  content: string,
+  created?: number
+}

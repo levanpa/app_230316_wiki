@@ -5,7 +5,7 @@ import axios from 'axios'
 import { countries } from 'country-list-json'
 import ReviewReport from './ReviewReport.vue'
 
-const props = defineProps<{ data: dto.reviewDto[] }>()
+const props = defineProps<{ data: dto.reviewDto[], jobId: number }>()
 
 function formattedDate(date: number): string {
   const options: Intl.DateTimeFormatOptions = {
@@ -49,24 +49,39 @@ function vote(event: Event, reviewID: number, type: string) {
   })
 }
 
-// todo: finish this
-function reportReview(event: Event, reviewID: number) {
+function showReportBox(event: Event) {
   event.preventDefault()
-  let target: HTMLButtonElement = event.target as HTMLButtonElement
-  let item: HTMLLIElement = target.closest('.review-item') as HTMLLIElement
-  if (item.classList.contains('report-active')) {
-    target.parentElement?.classList.remove('is-active')
-    item.querySelector('.review-report-component')?.classList.remove('is-active')
-    setTimeout(() => {
-      item.classList.remove('report-active')
-    }, 200)
-  } else {
-    target.parentElement?.classList.add('is-active')
-    setTimeout(() => {
-      item.classList.add('report-active')
-    }, 100)
-    item.querySelector('.review-report-component')?.classList.add('is-active')
+  let target: HTMLButtonElement = event.currentTarget as HTMLButtonElement
+  let reviewItemElement: HTMLLIElement = target.closest('.review-item') as HTMLLIElement
+  let isActive: boolean
+
+  isActive = checkActive(reviewItemElement)
+  closeAllReports()
+  if (!isActive) openReport()
+
+  function checkActive(reviewItemElement: HTMLLIElement): boolean {
+    return reviewItemElement.classList.contains('report-active')
   }
+  function openReport() {
+    target.classList.add('is-active')
+    setTimeout(() => {
+      reviewItemElement.classList.add('report-active')
+    }, 100)
+    reviewItemElement.querySelector('.review-report-component')?.classList.add('is-active')
+  }
+}
+
+function closeAllReports() {
+  const component: HTMLDivElement = document.querySelector('.review-list-component') as HTMLDivElement
+  component.querySelectorAll('.review-item.report-active').forEach((item) => {
+    item.classList.remove('report-active')
+  })
+  component.querySelectorAll('.button.report.is-active').forEach((item) => {
+    item.classList.remove('is-active')
+  })
+  component.querySelectorAll('.review-report-component.is-active').forEach((item) => {
+    item.classList.remove('is-active')
+  })
 }
 </script>
 
@@ -85,15 +100,16 @@ function reportReview(event: Event, reviewID: number) {
         p.content {{ item.content }}
       .bottom
         .button-wrapper
-          button.like(@click="$event => vote($event, item.id || 0, 'like')")
+          button.button.like(@click="$event => vote($event, item.id || 0, 'like')")
             i.fa-regular.fa-thumbs-up
             span.number {{ item.like }}
-          button.dislike(@click="$event => vote($event, item.id || 0, 'dislike')")
+          button.button.dislike(@click="$event => vote($event, item.id || 0, 'dislike')")
             i.fa-regular.fa-thumbs-down
             span.number {{ item.dislike }}
-          button.report(@click="$event => reportReview($event, item.id || 0)")
-            i.fa-solid.fa-triangle-exclamation
-      ReviewReport
+          .report-button-wrapper
+            button.button.report(@click="$event => showReportBox($event)")
+              i.fa-solid.fa-triangle-exclamation
+            ReviewReport(:jobId="jobId" :reviewId="item.id || 0" @close-all-reports="closeAllReports")
   p(v-else) There are no reviews.
 </template>
 
@@ -150,23 +166,27 @@ function reportReview(event: Event, reviewID: number) {
     background-color: #f5f5f5
     border-bottom-left-radius: 10px
     border-bottom-right-radius: 10px
-    button
+    .button
       display: inline-flex
       align-items: center
       gap: 10px
       padding: 4px 10px
       border-radius: 50px
       transition: background-color ease 0.2s
-      &:hover,
-      &.is-active
+      &:hover
         background-color: #fff
+      &.is-active
+        background-color: #333
     i
       font-size: 24px
   .like i
     color: #19c819
   .dislike i
     color: #1184ff
-  .report i
+  .report > i
     color: #e32525
+  .report-button-wrapper
+    display: inline-block
+    position: relative
     
 </style>
