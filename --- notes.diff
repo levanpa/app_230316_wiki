@@ -41,16 +41,20 @@ npm i @kyvg/vue3-notification
 - admin page
 - pagination
 - authentication
-- loading state of component
 - responsive
-- subscribe function
 + request new job
 + post new review
 + report a review, notify
 + suggest function
-- 404 page
 - user management
 - admin management
+
+--- todo later
+- loading state of component
+- subscribe function
+- 404 page
+- update statistics
+
 
 
 --- prepare ideal
@@ -79,6 +83,7 @@ npm i @kyvg/vue3-notification
 - đăng xuất
 
 
+
 --- work w docker
 - start docker
 docker compose up
@@ -87,3 +92,17 @@ docker exec -it containerId bash
 - start postgres
 sudo -u postgres -i
 psql -U admin -d review_job
+
+
+
+--- note exp
+- use pinia outside of component
+make sure you call useXxxStore() after the store has been initialized:
+import { useJobsStore } from './stores/jobs'
+function fetchData() { const store = useJobsStore() }
+in component:
+import { fetchData } from '...'
+fetchData()
+
+- path alias
+setup path resolver in both vite.config.ts and tsconfig.json

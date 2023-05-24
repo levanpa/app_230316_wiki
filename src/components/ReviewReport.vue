@@ -112,5 +112,5 @@ function sendReport(event: Event) {
       font-size: 24px
       transition: opacity ease 0.2s
       &:hover
-        opacity: 0.8 
+        opacity: 0.8
 </style>

@@ -1,61 +1,31 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import type { Ref } from 'vue'
 import { useRoute } from 'vue-router'
-import axios from 'axios'
-import * as dto from './dto'
-import { useJobsStore } from './stores/jobs'
+import * as axios from '@/axios'
+import * as dto from '@/dto'
 import { useReviewsStore } from './stores/reviews'
+import { useNotification } from '@kyvg/vue3-notification'
 import NewReview from './components/NewReview.vue'
 import ReviewList from './components/ReviewList.vue'
-import { useNotification } from '@kyvg/vue3-notification'
 
 const route = useRoute()
-let jobStore = useJobsStore()
 let reviewStore = useReviewsStore()
 let reviews: Ref<dto.reviewDto[]> = ref([])
 let tempReviews: dto.reviewDto[] | undefined
 let job: Ref<dto.jobDto | undefined> = ref()
-let tempJob: dto.jobDto[] | undefined
 const jobId: number = parseInt((route.params.id).toString(), 10)
 let isShowNewReview: Ref<boolean> = ref(false)
 const { notify } = useNotification()
 
-fetchData()
-
-function fetchData() {
-  // check if there is data in store
-  tempJob = jobStore.get(jobId)
-  if (tempJob && tempJob[0]) {
-    console.log('fetched data from store')
-    job.value = tempJob[0]
-  } else {
-    axios.get(`http://localhost:3000/jobs/${jobId}`).then((response) => {
-      job.value = response.data
-      job.value && jobStore.add([job.value])
-    })
-  }
-
-  tempReviews = reviewStore.get(jobId)
-  if (tempReviews && tempReviews[0]) {
-    reviews.value = tempReviews
-  } else {
-    // for nestjs
-    // axios.post('http://localhost:3000/reviews', {
-    // type: 'query',
-    // options: {
-    //   where: {
-    //     job_id: jobId
-    //   }
-    // }
-    axios.get(`http://localhost:3000/reviews?job_id=${jobId}`, {
-    }).then((response) => {
-      reviews.value = response.data
-      reviews.value && reviewStore.add(reviews.value)
-    })
-  }
-
-}
+onMounted(async () => {
+  await axios.fetchOne('jobs', jobId).then((response) => {
+    job.value = response as dto.jobDto
+  })
+  await axios.ins.get(`http://localhost:3000/reviews?job_id=${jobId}`).then((response) => {
+    reviews.value = response.data
+  })
+})
 
 // todo: finish this
 function subscribe(event: Event) {
@@ -69,14 +39,15 @@ function changeVisibility() {
 
 function postReview(data: dto.reviewDto) {
   data.job_id = jobId
-  axios.post(`http://localhost:3000/reviews/`, data).then((response) => {
+  axios.ins.post(`http://localhost:3000/reviews/`, data).then((response) => {
     reviewStore.add([response.data])
-    updateReviewList()
+    // updateReviewList()
     updateReviewCount()
     changeVisibility()
     data.content = ''
   })
 
+  // todo: fix this
   function updateReviewList() {
     tempReviews = reviewStore.get(jobId)
     if (tempReviews && tempReviews[0]) {
@@ -96,7 +67,7 @@ function postReview(data: dto.reviewDto) {
     if (job.value?.review_counter) {
       job.value.review_counter++
     }
-    axios.put(`http://localhost:3000/jobs/${jobId}`, job.value).then(() => {
+    axios.ins.put(`http://localhost:3000/jobs/${jobId}`, job.value).then(() => {
       console.log('updated review counter')
     })
   }
@@ -141,6 +112,7 @@ function postReview(data: dto.reviewDto) {
           option(value="2") Not useful reviews only
       button.apply-button Apply
     ReviewList(:data="reviews" :jobId="jobId")
+  .bottom-banner
 </template>
 
 <style lang="sass">

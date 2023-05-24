@@ -1,28 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import type { Ref } from 'vue'
-import axios from 'axios'
-import * as dto from '../dto'
-import { useJobsStore } from '../stores/jobs'
+import * as axios from '@/axios'
+import * as dto from '@/dto'
 
-let jobStore = useJobsStore()
 let jobs: Ref<dto.jobDto[]> = ref([])
-let tempJob: dto.jobDto[] | undefined
 
-fetchData()
-
-function fetchData() {
-  // check db in store
-  tempJob = jobStore.get()
-  if (tempJob && tempJob[0]) {
-    jobs.value = tempJob
-  }
-  axios.get('http://localhost:3000/jobs').then((response) => {
-    // console.log('response.data', response.data)
-    jobs.value = response.data
-    jobs.value && jobStore.add(jobs.value)
+onMounted(async () => {
+  await axios.fetchAll('jobs', { _limit: 5 }).then((response) => {
+    jobs.value = response as dto.jobDto[]
   })
-}
+})
 
 function changeTab(event: Event) {
   event.preventDefault()
@@ -65,22 +53,6 @@ function paginate(event: Event) {
             i.fa-regular.fa-map
             span {{ item.category }}
   p(v-else) There are no jobs
-  //- ul.job-list
-  //-   each i in Array(5)
-  //-     li.job-item
-  //-       router-link.job-link(:to="'/detail/example'")
-  //-         img.job-image(src="" alt="")
-  //-         .job-info
-  //-           .job-name.has-icon
-  //-             i.fa-solid.fa-briefcase
-  //-             span.name shdfiskdjfhksjdhfa.md.as d;alkd
-  //-             span.count (25)
-  //-           .job-location.has-icon
-  //-             i.fa-solid.fa-location-dot
-  //-             span shdfiskdjfhksjdhf
-  //-           .job-field.has-icon
-  //-             i.fa-regular.fa-map
-  //-             span shdfiskdjfhksjdhf alj sdlka 
   .pagination-wrapper
     ul.pagination-list
       each i in Array(6)

@@ -1,25 +1,27 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import type { Ref } from 'vue'
-defineProps<{
-  data: any,
-  options: any
-}>()
+import * as dto from '../dto'
 
+defineProps<{
+  data: dto.commonListInterface[],
+  options: dto.anyObj
+}>()
 </script>
 
 <template lang="pug">
-ul.common-list-component
-  li.common-item(v-for="item in Array((options && options.limit) || 3)")
-    router-link.common-link(to="/#")
-      .top
-        span.name {{ data.name }}
-        span.text {{ data.text }}
-        span.job {{ data.job }}
-      .time
-        span.number 21
-        span.text minutes ago
-      p.content(v-if="options && options.hasContent") Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi vel officia nam maxime iure earum sunt, dolorum saepe ut sit necessitatibus eum recusandae consectetur culpa iste, debitis reprehenderit ab nobis!
+.common-list-component
+  ul(v-if="data && data[0]")
+    //- todo: limit
+    li.common-item(v-for="item in data")
+      router-link.common-link(:to="item.url")
+        .top
+          span.name {{ item.name }}
+          span.text {{ item.text }}
+          span.job {{ item.job }}
+        .time
+          span.number 21
+          span.text minutes ago
+        p.content(v-if="options && options.hasContent") {{ item.content }}
+  p.no-data(v-else) There is no data.
 </template>
 
 <style lang="sass">

@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import type { Ref } from 'vue'
-import * as dto from '../dto'
+import * as dto from '@/dto'
+import { ins } from '@/axios'
 
 export const useJobsStore = defineStore('jobs', () => {
   let jobs: Ref<dto.jobDto[]> = ref([])
@@ -14,12 +15,9 @@ export const useJobsStore = defineStore('jobs', () => {
     })
   }
 
-  function get(id: number | null = null): dto.jobDto[] | undefined {
-    if (id) {
-      return jobs.value.filter(job => job.id === id)
-    } else {
-      return jobs.value
-    }
+  function get(id: number = 0): dto.jobDto | undefined {
+    if (!id) return
+    return jobs.value.filter(job => job.id === id)[0]
   }
 
   return { jobs, add, get }

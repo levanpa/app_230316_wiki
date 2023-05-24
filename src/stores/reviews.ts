@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import type { Ref } from 'vue'
 import * as dto from '../dto'
 
@@ -14,8 +14,8 @@ export const useReviewsStore = defineStore('reviews', () => {
     })
   }
 
-  function get(jobId: number): dto.reviewDto[] | undefined {
-    return reviews.value.filter(review => review.job_id === jobId)
+  function get(id: number): dto.reviewDto | undefined {
+    return reviews.value.filter(review => review.id === id)[0]
   }
 
   return { reviews, add, get }
