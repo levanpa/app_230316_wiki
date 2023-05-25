@@ -47,9 +47,11 @@ defineProps<{
       font-size: 18px
     .job
       color: $color1
-    .time span
-      margin-right: 5px
-      color: #888
+    .time
+      background-color: #eee
+      span
+        margin: 4px
+        color: #888
     .content
       color: #555
       text-align: justify

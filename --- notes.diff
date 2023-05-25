@@ -85,13 +85,15 @@ npm i @kyvg/vue3-notification
 
 
 --- work w docker
-- start docker
+- tab1: start docker
 docker compose up
-- execute container if failed
+- tab2: execute container if failed
 docker exec -it containerId bash
 - start postgres
 sudo -u postgres -i
 psql -U admin -d review_job
+- tab3: run project
+npm run start:dev
 
 
 
