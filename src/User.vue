@@ -18,7 +18,7 @@ let prevName = nameInput.value
 let prevEmail = emailInput.value
 let defaultStore = useDefaultStore()
 
-console.log('xxx', defaultStore.getUserType())
+// console.log('xxx', defaultStore.getUserType())
 onMounted(() => {
   // checkUserType()
 })

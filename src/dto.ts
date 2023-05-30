@@ -55,3 +55,4 @@ export interface commonListInterface {
 export interface anyObj {
   [key: string]: any
 }
+export type userTypes = 'guest' | 'user' | 'admin'

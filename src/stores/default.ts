@@ -16,8 +16,7 @@ export const useDefaultStore = defineStore('default', () => {
   let accessToken: string = ''
   let refreshToken: string = ''
 
-  type userTypes = 'guest' | 'user' | 'admin'
-  let userType: userTypes = 'guest'
+  let userType: dto.userTypes = 'guest'
 
   function setUser(user: dto.userDto) {
     user = { ...user }
@@ -36,7 +35,7 @@ export const useDefaultStore = defineStore('default', () => {
     return userType
   }
 
-  function setUserType(type: userTypes) {
+  function setUserType(type: dto.userTypes) {
     userType = type
   }
 
