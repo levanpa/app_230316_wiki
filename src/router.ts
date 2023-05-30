@@ -6,10 +6,13 @@ import UserNew from './components/user/UserNew.vue'
 import UserDefault from './components/user/UserDefault.vue'
 import UserReviews from './components/user/UserReviews.vue'
 import UserVotes from './components/user/UserVotes.vue'
+import UserRegister from './components/user/UserRegister.vue'
+import UserLogin from './components/user/UserLogin.vue'
 import Admin from './Admin.vue'
 import AdminDefault from './components/admin/AdminDefault.vue'
 import AdminRequests from './components/admin/AdminRequests.vue'
 import AdminReports from './components/admin/AdminReports.vue'
+import { useDefaultStore } from '@/stores/default'
 
 const routes = [
   {
@@ -30,6 +33,22 @@ const routes = [
         path: '',
         component: UserDefault,
         meta: { title: 'user page' }
+      },
+      {
+        path: 'register',
+        component: UserRegister,
+        meta: {
+          breadcrumb: 'Register',
+          title: 'Register'
+        }
+      },
+      {
+        path: 'login',
+        component: UserLogin,
+        meta: {
+          breadcrumb: 'Login',
+          title: 'Login'
+        }
       },
       {
         path: 'reviews',
@@ -95,9 +114,19 @@ router.beforeEach((to, from, next) => {
   window.scrollTo(0, 0)
   setTimeout(() => next(), 50)
 })
+
 router.afterEach((to, from, failure) => {
   if (!failure) {
     document.title = `Jobs review - ${to.meta.title}`
+
+    let defaultStore = useDefaultStore()
+    defaultStore.userType = 'guest'
+    let user = defaultStore.getUser()
+    console.log('get user', user)
+    if (user.id) {
+      defaultStore.userType = user.is_admin ? 'admin' : 'user'
+    }
+    console.log('userType', defaultStore.userType)
   }
 })
 

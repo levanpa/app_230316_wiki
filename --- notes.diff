@@ -38,7 +38,6 @@ npm i @kyvg/vue3-notification
 --- todos
 - sort and filter function
 + make notification
-- admin page
 - pagination
 - authentication
 - responsive
@@ -48,6 +47,10 @@ npm i @kyvg/vue3-notification
 + suggest function
 - user management
 - admin management
+- header search
++ check if logged in user or admin
+- admin/user/guest difference in UI
+- bottom banner/functionality
 
 --- todo later
 - loading state of component

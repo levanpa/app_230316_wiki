@@ -3,15 +3,17 @@ import { useJobsStore } from '@/stores/jobs'
 import { useReviewsStore } from '@/stores/reviews'
 import { useReportsStore } from '@/stores/reports'
 import { useUsersStore } from '@/stores/users'
+import { useDefaultStore } from '@/stores/default'
 import * as dto from '@/dto'
 
 const ins = axios.create({
   headers: {
-    'secret': 'backend'
+    'secret': 'frontend'
   }
 })
 type dtos = dto.jobDto | dto.reviewDto | dto.reportDto | dto.userDto
 let store: any
+const BEapi = 'http://localhost:3030/api/'
 
 function getStoreFromType(type: string) {
   store = undefined
@@ -54,7 +56,8 @@ async function fetchOne(type: string, id: number): Promise<dtos | undefined> {
     console.log(`fetched ${type} from store`)
     return temp
   }
-  await ins.get(`http://localhost:3000/${type}/${id}`).then((response) => {
+
+  await ins.get(`${BEapi + type}/${id}`).then((response) => {
     store.add([response.data])
     result = response.data
   })
@@ -73,16 +76,8 @@ async function fetchAll(type: string, options: dto.anyObj = {}): Promise<dtos[] 
     review_counter: 0,
     category: 0,
   }]
-  let suffix = ''
 
-  if (options) {
-    suffix += '?'
-    for (const [key, value] of Object.entries(options)) {
-      suffix += `${key}=${value}&`
-    }
-  }
-
-  await ins.get(`http://localhost:3000/${type + suffix}`).then((response) => {
+  await ins.get(`${BEapi + type}`, options).then((response) => {
     if (Array.isArray(response.data)) {
       store.add(response.data)
     } else {
@@ -94,16 +89,44 @@ async function fetchAll(type: string, options: dto.anyObj = {}): Promise<dtos[] 
   return result
 }
 
-async function fetchData(type: string): Promise<dto.anyObj[]> {
-  let result: dto.anyObj = {
-    id: 0,
-    name: '',
-    img: '',
-    review_counter: 0,
-    category: 0,
+async function login(email: string, password: string) {
+  let returnData
+  let isError = false
+  let defaultStore = useDefaultStore()
+
+  await ins.post(`${BEapi}auth/login`, { email, password }).then((response) => {
+    defaultStore.setAccessToken(response.data.accessToken)
+    defaultStore.setRefreshToken(response.data.refreshToken)
+    returnData = response.data
+  }).catch((error) => {
+    isError = true
+    returnData = error
+  })
+
+  // todo: fetch user data
+  if (!isError) {
+    defaultStore.setUserType('admin')
+    defaultStore.setUser({
+      id: 1,
+      name: 'test',
+      email: 'testmail@test.com',
+      is_admin: false,
+      review_counter: 0,
+      vote_counter: 0,
+    })
+    console.log('defaultStore.getUser()', defaultStore.getUser())
+    // await fetchAll('users', { email: email }).then((response) => {
+    //   console.log('users response', response)
+    // }).catch((error) => {
+    //   console.log('error response', error.message)
+    // })
   }
 
-  return [result]
+  return returnData
 }
 
-export { ins, fetchOne, fetchAll, fetchData }
+async function register(name: string, email: string, password: string) {
+  return await ins.post(`${BEapi}auth/register`, { name, email, password })
+}
+
+export { ins, fetchOne, fetchAll, login, register }

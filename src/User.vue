@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import type { Ref } from 'vue'
-import { useRoute } from 'vue-router'
-import axios from 'axios'
-import * as dto from './dto'
+import { useRoute, useRouter } from 'vue-router'
+import * as axios from '@/axios'
+import * as dto from '@/dto'
 import { useNotification } from '@kyvg/vue3-notification'
+import { useDefaultStore } from '@/stores/default'
 
 const route = useRoute()
-let breadcrumb: Ref<string> =
-  route.meta.breadcrumb ? ref((route.meta.breadcrumb).toString()) : ref('')
-let isShowRules: Ref<boolean> = route.path == '/user/new' ? ref(true) : ref(false)
+const router = useRouter()
+let breadcrumb = route.meta.breadcrumb ? ref((route.meta.breadcrumb).toString()) : ref('')
+let isShowRules = route.path == '/user/new' ? ref(true) : ref(false)
 const { notify } = useNotification()
-let nameInput: Ref<string> = ref('Nguyen Thi Bich Chi')
-let emailInput: Ref<string> = ref('lezinkkatory@gmail.com')
-let prevName: string = nameInput.value
-let prevEmail: string = emailInput.value
+let nameInput = ref('Nguyen Thi Bich Chi')
+let emailInput = ref('lezinkkatory@gmail.com')
+let prevName = nameInput.value
+let prevEmail = emailInput.value
+let defaultStore = useDefaultStore()
 
-watch(() => route.meta, newMeta => {
-  breadcrumb.value = newMeta.breadcrumb ? (newMeta.breadcrumb).toString() : ''
+console.log('xxx', defaultStore.getUserType())
+onMounted(() => {
+  // checkUserType()
 })
 
-watch(() => route.path, newPath => {
-  isShowRules.value = newPath == '/user/new' ? true : false
-})
-
+// todo: put request to save profile
 function saveProfile(event: Event) {
   event.preventDefault()
   if (prevName === nameInput.value && prevEmail === emailInput.value) {
@@ -39,12 +39,32 @@ function saveProfile(event: Event) {
     prevEmail = emailInput.value
   }
 }
+
+// check if current user is guest or regular user or admin
+function checkUserType() {
+  if (defaultStore.getUserType().toString() == 'admin') {
+    router.push('/admin/')
+  } else if (defaultStore.getUserType() == 'guest') {
+    router.push('/user/login/')
+  }
+}
+
+watch(() => route.meta, newMeta => {
+  breadcrumb.value = newMeta.breadcrumb ? (newMeta.breadcrumb).toString() : ''
+})
+
+watch(() => route.path, newPath => {
+  // checkUserType()
+  console.log('xxxx', defaultStore.getUserType(), defaultStore.getUser())
+  isShowRules.value = newPath == '/user/new' ? true : false
+})
+
 </script>
 
 <template lang="pug">
 .user-component
   .layout-wrapper
-    .sidebar-wrapper
+    .sidebar-wrapper(v-if="defaultStore.getUserType()!='guest'")
       .profile-wrapper
         .profile-title PROFILE INFORMATIONS
         .profile-item
@@ -69,6 +89,8 @@ function saveProfile(event: Event) {
         .rule-wrapper
           h3.rule-title Rules and recommendations
           p.rule-content Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis neque, eius praesentium cumque veniam repudiandae, consectetur doloremque placeat earum, ducimus sunt dignissimos sapiente distinctio ipsa incidunt sequi aperiam tempora tempore. Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime minus earum odit, obcaecati delectus repellendus suscipit eius, mollitia soluta atque laudantium officiis eaque eligendi. Est nemo hic odio dignissimos repellendus!
+    .sidebar-wrapper(v-else)
+      p You need to login first
 
     .main-content
       .breadcrumb-wrapper
