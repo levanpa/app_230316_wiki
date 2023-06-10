@@ -17,10 +17,10 @@ let emailInput = ref('lezinkkatory@gmail.com')
 let prevName = nameInput.value
 let prevEmail = emailInput.value
 let defaultStore = useDefaultStore()
+let currentUser: dto.userDto
 
-// console.log('xxx', defaultStore.getUserType())
 onMounted(() => {
-  // checkUserType()
+  checkUserType()
 })
 
 // todo: put request to save profile
@@ -42,10 +42,19 @@ function saveProfile(event: Event) {
 
 // check if current user is guest or regular user or admin
 function checkUserType() {
-  if (defaultStore.getUserType().toString() == 'admin') {
-    router.push('/admin/')
-  } else if (defaultStore.getUserType() == 'guest') {
-    router.push('/user/login/')
+  const userType = defaultStore.getUserType()
+  console.log('userType', userType)
+  switch (userType) {
+    case 'user':
+      currentUser = defaultStore.getUser()
+      nameInput.value = currentUser.name
+      emailInput.value = currentUser.email
+    case 'admin':
+      // router.push('/admin/')
+      break
+    default:
+      // router.push('/user/login/')
+      break
   }
 }
 
@@ -54,8 +63,7 @@ watch(() => route.meta, newMeta => {
 })
 
 watch(() => route.path, newPath => {
-  // checkUserType()
-  console.log('xxxx', defaultStore.getUserType(), defaultStore.getUser())
+  checkUserType()
   isShowRules.value = newPath == '/user/new' ? true : false
 })
 
@@ -79,10 +87,10 @@ watch(() => route.path, newPath => {
             i.fa-regular.fa-pen-to-square
         .profile-item
           span.item-title Review counter:
-          span 25
+          span {{ currentUser && currentUser.review_counter }}
         .profile-item
           span.item-title Vote counter:
-          span 255
+          span {{ currentUser && currentUser.vote_counter }}
       button.save-button(@click="$event=>saveProfile($event)") Save profile
       router-link.request-button(to="/user/new") Review for new job
       .rules(v-if="isShowRules")

@@ -7,11 +7,6 @@ import CommonList from '../CommonList.vue'
 
 let listReviewData: Ref<dto.commonListInterface[]> = ref([])
 let listVoteData: Ref<dto.commonListInterface[]> = ref([])
-// {
-//   name: 'You',
-//   text: 'recently vote this review in',
-//   job: 'Designer',
-// }
 
 // todo: fix fetch data
 onMounted(async () => {

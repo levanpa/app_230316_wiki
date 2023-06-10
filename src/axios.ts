@@ -13,7 +13,11 @@ const ins = axios.create({
 })
 type dtos = dto.jobDto | dto.reviewDto | dto.reportDto | dto.userDto
 let store: any
-const BEapi = 'http://localhost:3030/api/'
+
+// nestjs api
+// const BEapi = 'http://localhost:3030/api/'
+// json-server api
+const BEapi = 'http://localhost:3000/'
 
 function getStoreFromType(type: string) {
   store = undefined
@@ -77,7 +81,9 @@ async function fetchAll(type: string, options: dto.anyObj = {}): Promise<dtos[] 
     category: 0,
   }]
 
-  await ins.get(`${BEapi + type}`, options).then((response) => {
+  const suffix = '?_limit=5'
+
+  await ins.get(`${BEapi + type + suffix}`, options).then((response) => {
     if (Array.isArray(response.data)) {
       store.add(response.data)
     } else {
@@ -105,16 +111,15 @@ async function login(email: string, password: string) {
 
   // todo: fetch user data
   if (!isError) {
-    defaultStore.setUserType('admin')
+    defaultStore.setUserType('user')
     defaultStore.setUser({
       id: 1,
       name: 'test',
       email: 'testmail@test.com',
-      is_admin: false,
-      review_counter: 0,
-      vote_counter: 0,
+      is_admin: true,
+      review_counter: 24,
+      vote_counter: 134,
     })
-    console.log('defaultStore.getUser()', defaultStore.getUser())
     // await fetchAll('users', { email: email }).then((response) => {
     //   console.log('users response', response)
     // }).catch((error) => {

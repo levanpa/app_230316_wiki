@@ -20,7 +20,8 @@ let defaultStore = useDefaultStore()
 function login(event: Event) {
   event.preventDefault()
   axios.login('lezinkmgt@gmail.com', '0000').then((res) => {
-    router.push('/user/')
+    // router.push('/user/')
+    console.log('error', res)
   })
 }
 </script>

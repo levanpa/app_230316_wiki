@@ -47,7 +47,7 @@ npm i @kyvg/vue3-notification
 + suggest function
 - user management
 - admin management
-- header search
+- header search 
 + check if logged in user or admin
 - admin/user/guest difference in UI
 - bottom banner/functionality
@@ -57,6 +57,7 @@ npm i @kyvg/vue3-notification
 - subscribe function
 - 404 page
 - update statistics
+- save login info
 
 
 
@@ -111,3 +112,12 @@ fetchData()
 
 - path alias
 setup path resolver in both vite.config.ts and tsconfig.json
+
+
+
+---- 
+- đăng ký, đăng nhập
+- tạo job mới
+- tạo review mới
+- vote
+- management

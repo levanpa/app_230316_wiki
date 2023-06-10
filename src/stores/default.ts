@@ -18,9 +18,8 @@ export const useDefaultStore = defineStore('default', () => {
 
   let userType: dto.userTypes = 'guest'
 
-  function setUser(user: dto.userDto) {
-    user = { ...user }
-    console.log('set user', user)
+  function setUser(newUser: dto.userDto) {
+    user = { ...newUser }
   }
 
   function getUser(): dto.userDto {
