@@ -22,7 +22,7 @@ onMounted(async () => {
   await axios.fetchOne('jobs', jobId).then((response) => {
     job.value = response as dto.jobDto
   })
-  await axios.ins.get(`http://localhost:3000/reviews?job_id=${jobId}`).then((response) => {
+  await axios.ins.get(`http://localhost:3000/reviews?job_id=${jobId}&_limit=3`).then((response) => {
     reviews.value = response.data
   })
 })

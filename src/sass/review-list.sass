@@ -1,0 +1,105 @@
+.review-list-component
+  position: relative
+  .review-item
+    margin-bottom: 30px
+    border-radius: 10px
+    border: 1px solid #bbb
+    filter: drop-shadow(0 3px 3px #92a3d7)
+    &.report-active
+      position: relative
+      z-index: 1
+
+  .top
+    display: flex
+    align-items: center
+    padding: 5px 20px
+    background-color: #f5f5f5
+    border-top-left-radius: 10px
+    border-top-right-radius: 10px
+  .name
+    display: inline-block
+    margin-right: 5px
+    font-size: 20px
+    font-weight: 700
+  .time
+    margin-left: auto
+    color: #666
+
+  .middle
+    display: flex
+    gap: 15px
+    padding: 10px 20px
+    background-color: #fff
+    border-top: 1px solid #bbb
+    border-bottom: 1px solid #bbb
+  .info-wrapper
+    min-width: 180px
+    max-width: 240px
+    color: #666
+  .content
+    flex-basis: 100%
+    padding-left: 15px
+    text-align: justify
+    color: #333
+    border-left: 1px solid #bbb
+
+  .bottom
+    display: flex
+    gap: 20px
+    padding: 10px 20px
+    background-color: #f5f5f5
+    border-bottom-left-radius: 10px
+    border-bottom-right-radius: 10px
+    .button
+      display: inline-flex
+      align-items: center
+      gap: 10px
+      padding: 4px 10px
+      border-radius: 50px
+      transition: background-color ease 0.2s
+      &:hover
+        background-color: #fff
+      &.is-active
+        background-color: #333
+      &.menu
+        padding: 4px 20px
+    i
+      font-size: 24px
+  .like i
+    color: #19c819
+  .dislike i
+    color: #1184ff
+  .report > i
+    color: #e32525
+  .report-button-wrapper
+    display: inline-block
+    position: relative
+
+  .admin-function
+    margin-left: auto
+    position: relative
+  .admin-menu
+    max-width: 400px
+    padding: 13px 5px
+    background-color: #fff
+    border-radius: 10px
+    border: 1px solid #bbb
+    filter: drop-shadow(0 3px 3px #92a3d7)
+    position: absolute
+    top: 0
+    right: 0
+    opacity: 0
+    visibility: hidden
+    transition: all 0.2s ease
+    &.is-active
+      opacity: 1
+      visibility: visible
+  .wrapper
+    display: flex
+    flex-direction: column
+    gap: 5px
+  .menu-link
+    display: block
+    padding: 2px 10px
+    &:hover
+      background-color: #c4e3fc

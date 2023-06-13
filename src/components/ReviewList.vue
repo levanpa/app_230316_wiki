@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { Ref } from 'vue'
 import * as dto from '../dto'
 import axios from 'axios'
 import { countries } from 'country-list-json'
 import ReviewReport from './ReviewReport.vue'
 
 const props = defineProps<{ data: dto.reviewDto[], jobId: number }>()
+
+let menuRef: Ref<null | HTMLDivElement> = ref(null)
+let componentRef: Ref<null | HTMLDivElement> = ref(null)
 
 function formattedDate(date: number): string {
   const options: Intl.DateTimeFormatOptions = {
@@ -34,8 +38,7 @@ function getCountryName(code: string): string {
   return target?.name || 'nowhere'
 }
 
-function vote(event: Event, reviewID: number, type: string) {
-  event.preventDefault()
+function vote(reviewID: number, type: string) {
   let review: dto.reviewDto | undefined = props.data.find(item => item.id == reviewID)
   if (review?.[type] || review?.[type] == 0) {
     review[type]++
@@ -50,7 +53,6 @@ function vote(event: Event, reviewID: number, type: string) {
 }
 
 function showReportBox(event: Event) {
-  event.preventDefault()
   let target: HTMLButtonElement = event.currentTarget as HTMLButtonElement
   let reviewItemElement: HTMLLIElement = target.closest('.review-item') as HTMLLIElement
   let isActive: boolean
@@ -83,10 +85,34 @@ function closeAllReports() {
     item.classList.remove('is-active')
   })
 }
+
+function toggleMenu(event: Event, targetId: number) {
+  const targetOffsets = (event.target as HTMLDivElement).getBoundingClientRect()
+  const componentOffsets = (componentRef.value as HTMLDivElement).getBoundingClientRect()
+  let menu = menuRef.value as HTMLDivElement
+  let menuCurrentId = parseInt(menu.dataset.targetId || '0', 10)
+
+  if (menuCurrentId == targetId) {
+    close()
+  } else {
+    open()
+  }
+
+  function open() {
+    menu.style.top = `${targetOffsets.top - componentOffsets.top + 35}px`
+    menu.classList.add('is-active')
+    menu.dataset.targetId = targetId.toString()
+  }
+
+  function close() {
+    menu.classList.remove('is-active')
+    menu.dataset.targetId = '0'
+  }
+}
 </script>
 
 <template lang="pug">
-.review-list-component
+.review-list-component(ref="componentRef")
   ul.review-list(v-if="data[0]")
     li.review-item(v-for="item in data" :data-id="item.id")
       .top
@@ -99,94 +125,31 @@ function closeAllReports() {
             span.location {{ getCountryName(item.location) }}
         p.content {{ item.content }}
       .bottom
-        .button-wrapper
-          button.button.like(@click="$event => vote($event, item.id || 0, 'like')")
+        .button-buttons
+          button.button.like(@click.prevent="vote(item.id || 0, 'like')")
             i.fa-regular.fa-thumbs-up
             span.number {{ item.like }}
-          button.button.dislike(@click="$event => vote($event, item.id || 0, 'dislike')")
+          button.button.dislike(@click.prevent="vote(item.id || 0, 'dislike')")
             i.fa-regular.fa-thumbs-down
             span.number {{ item.dislike }}
           .report-button-wrapper
-            button.button.report(@click="$event => showReportBox($event)")
+            button.button.report(@click.prevent="$event => showReportBox($event)")
               i.fa-solid.fa-triangle-exclamation
             ReviewReport(:jobId="jobId" :reviewId="item.id || 0" @close-all-reports="closeAllReports")
+        .admin-function
+          button.button.menu(@click.prevent="$event => toggleMenu($event, item.id || 0)")
+            i.fa-solid.fa-ellipsis-vertical
   p(v-else) There are no reviews.
+  .admin-menu(ref="menuRef" :data-target-id="0")
+    ul.wrapper
+      li.menu-item
+        a.menu-link(href="#" @click.prevent="") Edit
+      li.menu-item
+        a.menu-link(href="#" @click.prevent="") Bookmark
+      li.menu-item
+        a.menu-link(href="#" @click.prevent="") Delete
 </template>
 
 <style lang="sass">
-// @import "/src/sass/review-list"
-.review-list-component
-  .review-item
-    margin-bottom: 30px
-    border-radius: 10px
-    border: 1px solid #bbb
-    filter: drop-shadow(0 3px 3px #92a3d7)
-    &.report-active
-      position: relative
-      z-index: 1
-
-  .top
-    display: flex
-    align-items: center
-    padding: 5px 20px
-    background-color: #f5f5f5
-    border-top-left-radius: 10px
-    border-top-right-radius: 10px
-  .name
-    display: inline-block
-    margin-right: 5px
-    font-size: 20px
-    font-weight: 700
-  .time
-    margin-left: auto
-    color: #666
-
-  .middle
-    display: flex
-    gap: 15px
-    padding: 10px 20px
-    background-color: #fff
-    border-top: 1px solid #bbb
-    border-bottom: 1px solid #bbb
-  .info-wrapper
-    min-width: 180px
-    max-width: 240px
-    color: #666
-  .content
-    flex-basis: 100%
-    padding-left: 15px
-    text-align: justify
-    color: #333
-    border-left: 1px solid #bbb
-
-  .bottom
-    display: flex
-    gap: 20px
-    padding: 10px 20px
-    background-color: #f5f5f5
-    border-bottom-left-radius: 10px
-    border-bottom-right-radius: 10px
-    .button
-      display: inline-flex
-      align-items: center
-      gap: 10px
-      padding: 4px 10px
-      border-radius: 50px
-      transition: background-color ease 0.2s
-      &:hover
-        background-color: #fff
-      &.is-active
-        background-color: #333
-    i
-      font-size: 24px
-  .like i
-    color: #19c819
-  .dislike i
-    color: #1184ff
-  .report > i
-    color: #e32525
-  .report-button-wrapper
-    display: inline-block
-    position: relative
-    
+@import "/src/sass/review-list"    
 </style>
