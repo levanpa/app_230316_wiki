@@ -109,6 +109,14 @@ function toggleMenu(event: Event, targetId: number) {
     menu.dataset.targetId = '0'
   }
 }
+
+function deleteReview(event: Event) {
+  const target = event.target as HTMLAnchorElement
+  let menu = menuRef.value as HTMLDivElement
+  let reviewId = parseInt(menu.dataset.targetId || '0', 10)
+  // post delete api
+  console.log('delete review: ', reviewId)
+}
 </script>
 
 <template lang="pug">
@@ -147,7 +155,7 @@ function toggleMenu(event: Event, targetId: number) {
       li.menu-item
         a.menu-link(href="#" @click.prevent="") Bookmark
       li.menu-item
-        a.menu-link(href="#" @click.prevent="") Delete
+        a.menu-link(href="#" @click.prevent="$event => deleteReview($event)") Delete
 </template>
 
 <style lang="sass">
