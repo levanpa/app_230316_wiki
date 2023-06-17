@@ -16,4 +16,11 @@ import Sidebar from './components/Sidebar.vue'
   grid-template-columns: 60% calc(40% - 20px)
   padding: 40px 0
   gap: 20px
+
++mb
+  .main-content-wrapper
+    grid-template-columns: unset
+    padding: 40rem 0
+    gap: 20rem
+
 </style>

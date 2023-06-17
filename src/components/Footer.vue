@@ -13,4 +13,9 @@ footer.footer-component
   color: #fff
   font-size: 18px
   background: linear-gradient(to right, #314268, #824949, #c3acf7)
+
++mb
+  .footer-component
+    padding: 15rem 0
+    font-size: 18rem
 </style>

@@ -56,4 +56,19 @@ defineProps<{
       color: #555
       text-align: justify
       @include line-clamp(2)
+
++mb
+  .common-list-component
+    padding: 5rem 10rem
+    .common-item
+      padding: 10rem 15rem
+    .common-link
+      gap: 5rem
+      .top span
+        margin-right: 5rem
+      .name, .job
+        font-size: 18rem
+      .time
+        span
+          margin: 4rem
 </style>
