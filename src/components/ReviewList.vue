@@ -159,5 +159,5 @@ function deleteReview(event: Event) {
 </template>
 
 <style lang="sass">
-@import "/src/sass/review-list"    
+@import "/src/sass/review-list"
 </style>

@@ -17,6 +17,7 @@ let job: Ref<dto.jobDto | undefined> = ref()
 const jobId: number = parseInt((route.params.id).toString(), 10)
 let isShowNewReview: Ref<boolean> = ref(false)
 const { notify } = useNotification()
+let refSubscription: Ref<null | HTMLButtonElement> = ref(null)
 
 onMounted(async () => {
   await axios.fetchOne('jobs', jobId).then((response) => {
@@ -28,8 +29,9 @@ onMounted(async () => {
 })
 
 // todo: finish this
-function subscribe(event: Event) {
-  event.preventDefault()
+function subscribe() {
+  const button = refSubscription.value as HTMLButtonElement
+  button.classList.toggle('is-activex')
 }
 
 // emits
@@ -90,8 +92,13 @@ function postReview(data: dto.reviewDto) {
           i.fa-regular.fa-map
           span {{ job.category }}
       .actions
-        button.write-review(@click="changeVisibility()") Write review
-        button.subscribe Subscribe for notifications
+        button.write-review(@click="changeVisibility()")
+          span.pc Write review
+          i.fa-solid.fa-pen.mb
+        button.subscribe(ref="refSubscription" @click.prevent="subscribe()")
+          span.pc Subscribe for notifications
+          i.fa-solid.fa-envelope.mb.not-subscribed
+          i.fa-solid.fa-envelope-circle-check.mb.subscribed
     //- todo: v-else
     NewReview(:isShow="isShowNewReview" @change-visibility="changeVisibility" @post-review="postReview")
 

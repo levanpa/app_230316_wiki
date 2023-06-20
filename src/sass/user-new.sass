@@ -1,0 +1,117 @@
+.user-new-component
+  .job-wrapper
+    margin-bottom: 20px
+    position: relative
+    .row
+      margin-bottom: 10px
+    .title
+      display: inline-block
+      min-width: 100px
+      margin-right: 5px
+    input
+      padding: 4px
+      border: 1px solid #ccc
+
+  .suggest-wrapper
+    width: 300px
+    max-height: 200px
+    padding: 8px 15px
+    overflow: auto scroll
+    border-radius: 10px
+    box-shadow: 0 0 5px 3px #aaa
+    background-color: #fff
+    position: absolute
+    top: -100px
+    right: 0
+    .suggest-title
+      font-weight: 700
+      font-size: 20px
+      border-bottom: 1px solid #333
+      i
+        margin-right: 8px
+        margin-bottom: 8px
+        cursor: pointer
+        font-size: 20px
+        transition: all ease 0.2s
+        &:hover
+          scale: 1.1
+          color: #e30000
+    .suggest-item
+      margin: 2px 0
+      padding: 4px
+      border-bottom: 1px dashed #ccc
+      cursor: pointer
+      transition: background-color 0.25s ease
+      &:hover
+        background-color: #fff4e9
+
+.new-review-component.is-user-new
+  display: block
+  max-height: unset !important
+  .text-area
+    width: 100%
+    padding-right: 25px
+  .rules,
+  .cancel-button
+    display: none
+
+.rules
+  flex-basis: 40%
+  padding-top: 25px
+  .rule-wrapper
+    padding: 10px 18px
+    border-radius: 10px
+    color: #fff
+    background-color: #209cee
+  .rule-title
+    margin-bottom: 10px
+    font-weight: 600
+    font-size: 22px
+    text-shadow: 1px 2px #3b3ef0
+  .rule-content
+    text-align: justify
+
++mb
+  .user-new-component
+    .job-wrapper
+      margin-bottom: 20rem
+      .row
+        margin-bottom: 10rem
+      .title
+        margin-bottom: 10rem
+        min-width: 100rem
+        margin-right: 5rem
+      input
+        width: 100%
+        padding: 4rem
+
+    .suggest-wrapper
+      width: 300rem
+      max-height: 200rem
+      padding: 8rem 15rem
+      border-radius: 10rem
+      box-shadow: 0 0 5rem 3rem #aaa
+      top: -100rem
+      .suggest-title
+        font-size: 20rem
+        i
+          margin-right: 8rem
+          margin-bottom: 8rem
+          font-size: 20rem
+      .suggest-item
+        margin: 2rem 0
+        padding: 4rem
+
+  .new-review-component.is-user-new
+    .text-area
+      padding-right: 25rem
+
+  .rules
+    flex-basis: 40%
+    padding-top: 25rem
+    .rule-wrapper
+      padding: 10rem 18rem
+      border-radius: 10rem
+    .rule-title
+      margin-bottom: 10rem
+      font-size: 22rem

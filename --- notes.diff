@@ -113,6 +113,8 @@ fetchData()
 - path alias
 setup path resolver in both vite.config.ts and tsconfig.json
 
+- ":target" css selector is very useful
+
 
 
 ---- 

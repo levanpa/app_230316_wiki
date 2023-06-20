@@ -3,7 +3,12 @@ import { onMounted } from 'vue'
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import TopBanner from './components/TopBanner.vue'
+import * as utils from '@/utils'
+
 onMounted(() => {
+  if (utils.isMobile()) {
+    document.getElementsByTagName('html')[0]?.classList.add('is-mobile')
+  }
   // reduce layout change
   document.getElementById('app')?.classList.add('is-show')
 })

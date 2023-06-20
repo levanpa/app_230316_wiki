@@ -22,6 +22,7 @@
       padding: 4px
       border: 1px solid #ccc
   select
+    max-width: 100%
     padding: 4px 8px
     border: 1px solid #ccc
   .review-content
@@ -52,3 +53,41 @@
     text-shadow: 1px 2px #3b3ef0
   .rule-content
     text-align: justify
+
++mb
+  .new-review-component
+    box-shadow: 0 0 5rem 3rem #fff
+    &.is-show
+      flex-direction: column
+      max-height: unset
+      margin-bottom: 40rem
+      box-shadow: 0 0 5rem 3rem #aaa
+    .text-area
+      width: 100%
+      padding: 15rem
+    .options
+      > *
+        margin-bottom: 20rem
+      .title
+        margin-right: 10rem
+      .experience-number
+        width: 80rem
+        margin-bottom: 5rem
+        padding: 4rem
+    select
+      padding: 4rem 8rem
+    .review-content
+      height: 400rem
+      margin-bottom: 20rem
+      padding: 5rem 8rem
+    .button-wrapper
+      gap: 20rem
+    .rules
+      flex-basis: 40%
+      padding: 25rem
+    .rule-wrapper
+      padding: 10rem 18rem
+      border-radius: 10rem
+    .rule-title
+      margin-bottom: 10rem
+      font-size: 22rem
