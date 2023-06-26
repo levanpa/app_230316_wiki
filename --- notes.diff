@@ -32,6 +32,8 @@ npm install pinia
 npm i country-list-json
 - install vue notification
 npm i @kyvg/vue3-notification
+- install language-plugin-pug support for pug ts
+npm install -D @vue/language-plugin-pug
 
 
 
