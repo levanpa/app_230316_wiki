@@ -7,14 +7,15 @@ import { ins } from '@/axios'
 export const useDefaultStore = defineStore('default', () => {
   // current user logged in
   let user: dto.userDto = {
+    id: 0,
     name: '',
     email: '',
-    is_admin: false,
+    role: 0,
     review_counter: 0,
     vote_counter: 0,
   }
-  let accessToken: string = ''
-  let refreshToken: string = ''
+  let accessToken = ''
+  let refreshToken = ''
 
   let userType: dto.userTypes = 'guest'
 
@@ -26,8 +27,20 @@ export const useDefaultStore = defineStore('default', () => {
     return user
   }
 
+  function getAccessToken() {
+    return accessToken
+  }
+
   function setAccessToken(token: string) {
     accessToken = token
+  }
+
+  function getRefreshToken() {
+    return accessToken
+  }
+
+  function setRefreshToken(token: string) {
+    refreshToken = token
   }
 
   function getUserType() {
@@ -38,9 +51,29 @@ export const useDefaultStore = defineStore('default', () => {
     userType = type
   }
 
-  function setRefreshToken(token: string) {
-    refreshToken = token
+  function logout() {
+    user = {
+      id: 0,
+      name: '',
+      email: '',
+      role: 0,
+      review_counter: 0,
+      vote_counter: 0,
+    }
+    accessToken = ''
+    refreshToken = ''
+    userType = 'guest'
   }
 
-  return { accessToken, refreshToken, setAccessToken, setRefreshToken, setUser, getUser, getUserType, setUserType }
+  return {
+    getAccessToken,
+    getRefreshToken,
+    setAccessToken,
+    setRefreshToken,
+    setUser,
+    getUser,
+    getUserType,
+    setUserType,
+    logout,
+  }
 })

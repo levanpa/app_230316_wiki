@@ -14,13 +14,15 @@ function register(event: Event) {
   event.preventDefault()
   if (password.value !== repassword.value) {
     // todo: notify the error
+    console.log('password incorrect')
     return
   }
 
   axios.register(name.value, email.value, password.value).then((response) => {
-    axios.login(email.value, password.value)
+    // axios.login(email.value, password.value)
+    console.log('response', response)
   }).catch((error) => {
-    console.log('error', error.message)
+    console.log('error:', error.message)
   })
 }
 </script>

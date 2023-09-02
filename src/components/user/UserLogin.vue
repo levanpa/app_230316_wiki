@@ -5,11 +5,13 @@ import * as axios from '@/axios'
 import * as dto from '@/dto'
 import { useRoute, useRouter } from 'vue-router'
 import { useDefaultStore } from '@/stores/default'
+import { useNotification } from '@kyvg/vue3-notification'
 
 let email = ref('')
 let password = ref('')
 const router = useRouter()
 let defaultStore = useDefaultStore()
+const { notify } = useNotification()
 
 // axios.ins.get('http://localhost:3030/api/carrers/c7e88f1f-76a1-421f-ac19-23242d7f0290').then((res) => {
 //   console.log('2', res.data)
@@ -19,9 +21,14 @@ let defaultStore = useDefaultStore()
 
 function login(event: Event) {
   event.preventDefault()
-  axios.login('lezinkmgt@gmail.com', '0000').then((res) => {
-    // router.push('/user/')
-    console.log('error', res)
+  axios.login(email.value, password.value).then((response) => {
+    notify({ text: 'Login successfully.' })
+    router.push('/user/')
+  }).catch((error) => {
+    notify({
+      text: 'Login failed.',
+      type: 'error',
+    })
   })
 }
 </script>

@@ -8,8 +8,8 @@ import * as dto from '@/dto'
 
 const ins = axios.create({
   headers: {
-    'secret': 'frontend'
-  }
+    secret: 'frontend',
+  },
 })
 type dtos = dto.jobDto | dto.reviewDto | dto.reportDto | dto.userDto
 let store: any
@@ -69,17 +69,22 @@ async function fetchOne(type: string, id: number): Promise<dtos | undefined> {
   return result
 }
 
-async function fetchAll(type: string, options: dto.anyObj = {}): Promise<dtos[] | undefined> {
+async function fetchAll(
+  type: string,
+  options: dto.anyObj = {},
+): Promise<dtos[] | undefined> {
   getStoreFromType(type)
   if (!store) return
 
-  let result: dtos[] = [{
-    id: 0,
-    name: '',
-    img: '',
-    review_counter: 0,
-    category: 0,
-  }]
+  let result: dtos[] = [
+    {
+      id: 0,
+      name: '',
+      img: '',
+      review_counter: 0,
+      category: 0,
+    },
+  ]
 
   const suffix = '?_limit=5'
 
@@ -97,35 +102,21 @@ async function fetchAll(type: string, options: dto.anyObj = {}): Promise<dtos[] 
 
 async function login(email: string, password: string) {
   let returnData
-  let isError = false
   let defaultStore = useDefaultStore()
 
-  await ins.post(`${BEapi}auth/login`, { email, password }).then((response) => {
-    defaultStore.setAccessToken(response.data.accessToken)
-    defaultStore.setRefreshToken(response.data.refreshToken)
-    returnData = response.data
-  }).catch((error) => {
-    isError = true
-    returnData = error
-  })
-
-  // todo: fetch user data
-  if (!isError) {
-    defaultStore.setUserType('user')
-    defaultStore.setUser({
-      id: 1,
-      name: 'test',
-      email: 'testmail@test.com',
-      is_admin: true,
-      review_counter: 24,
-      vote_counter: 134,
+  await ins
+    .post(`${BEapi}auth/login`, { email, password })
+    .then((response) => {
+      console.log(response.data.message)
+      // defaultStore.setRefreshToken(response.data.refreshToken)
+      defaultStore.setAccessToken(response.data.token)
+      defaultStore.setUserType('user')
+      defaultStore.setUser(response.data.user)
+      returnData = response.data.user
     })
-    // await fetchAll('users', { email: email }).then((response) => {
-    //   console.log('users response', response)
-    // }).catch((error) => {
-    //   console.log('error response', error.message)
-    // })
-  }
+    .catch(({ message, code }) => {
+      returnData = { message, code }
+    })
 
   return returnData
 }

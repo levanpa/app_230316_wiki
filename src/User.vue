@@ -24,8 +24,7 @@ onMounted(() => {
 })
 
 // todo: put request to save profile
-function saveProfile(event: Event) {
-  event.preventDefault()
+function saveProfile() {
   if (prevName === nameInput.value && prevEmail === emailInput.value) {
     notify({
       text: 'Profile was not edited.',
@@ -40,10 +39,19 @@ function saveProfile(event: Event) {
   }
 }
 
+function logout() {
+  defaultStore.logout()
+  notify({
+    text: 'You have been logged out',
+    type: 'warn'
+  })
+  router.push('/user/login/')
+}
+
 // check if current user is guest or regular user or admin
 function checkUserType() {
   const userType = defaultStore.getUserType()
-  console.log('userType', userType)
+  // console.log('userType', userType)
   switch (userType) {
     case 'user':
       currentUser = defaultStore.getUser()
@@ -53,7 +61,7 @@ function checkUserType() {
       // router.push('/admin/')
       break
     default:
-      // router.push('/user/login/')
+      router.push('/user/login/')
       break
   }
 }
@@ -72,7 +80,7 @@ watch(() => route.path, newPath => {
 <template lang="pug">
 .user-component
   .layout-wrapper
-    .sidebar-wrapper(v-if="defaultStore.getUserType()!='guest'")
+    .sidebar-wrapper(v-if="defaultStore.getUserType() != 'guest'")
       .profile-wrapper
         .profile-title PROFILE INFORMATIONS
         .profile-item
@@ -91,14 +99,17 @@ watch(() => route.path, newPath => {
         .profile-item
           span.item-title Vote counter:
           span {{ currentUser && currentUser.vote_counter }}
-      button.save-button(@click="$event=>saveProfile($event)") Save profile
-      router-link.request-button(to="/user/new") Review for new job
+      .bottom
+        button.save-button(@click.prevent="saveProfile()") Save profile
+        router-link.request-button(to="/user/new") Review job
+        button.logout-button(@click.prevent="logout()")
+          i.fa-solid.fa-right-from-bracket
       .rules(v-if="isShowRules")
         .rule-wrapper
           h3.rule-title Rules and recommendations
           p.rule-content Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis neque, eius praesentium cumque veniam repudiandae, consectetur doloremque placeat earum, ducimus sunt dignissimos sapiente distinctio ipsa incidunt sequi aperiam tempora tempore. Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime minus earum odit, obcaecati delectus repellendus suscipit eius, mollitia soluta atque laudantium officiis eaque eligendi. Est nemo hic odio dignissimos repellendus!
     .sidebar-wrapper(v-else)
-      p You need to login first
+      p You need to login first.
 
     .main-content
       .breadcrumb-wrapper

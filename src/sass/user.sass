@@ -33,17 +33,25 @@
     .bold
       font-weight: 700
 
+  .bottom
+    display: flex
+    align-items: center
+    gap: 10px
   .item-link,
   .save-button,
-  .request-button
+  .request-button,
+  .logout-button
     @include common-button
   .item-link
     font-size: 16px
     font-weight: 400
     span
       margin-right: 8px
-  .save-button
-    margin-right: 10px
+  .logout-button
+    color: #e30000
+    border-color: #e30000
+    &:hover
+      border-color: #3567d2
 
   .main-content
     width: 100%
