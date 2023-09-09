@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 import type { Ref } from 'vue'
 import * as dto from '@/dto'
 import { ins } from '@/axios'
@@ -16,7 +16,6 @@ export const useDefaultStore = defineStore('default', () => {
   }
   let accessToken = ''
   let refreshToken = ''
-
   let userType: dto.userTypes = 'guest'
 
   function setUser(newUser: dto.userDto) {
@@ -52,20 +51,22 @@ export const useDefaultStore = defineStore('default', () => {
   }
 
   function logout() {
-    user = {
+    console.log('logout')
+    setUser({
       id: 0,
       name: '',
       email: '',
       role: 0,
       review_counter: 0,
       vote_counter: 0,
-    }
+    })
     accessToken = ''
     refreshToken = ''
     userType = 'guest'
   }
 
   return {
+    // user,
     getAccessToken,
     getRefreshToken,
     setAccessToken,

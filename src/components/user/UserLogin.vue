@@ -1,32 +1,40 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import type { Ref } from 'vue'
 import * as axios from '@/axios'
 import * as dto from '@/dto'
-import { useRoute, useRouter } from 'vue-router'
-import { useDefaultStore } from '@/stores/default'
+import { useRouter } from 'vue-router'
 import { useNotification } from '@kyvg/vue3-notification'
+import { useCookies } from 'vue3-cookies'
 
 let email = ref('')
 let password = ref('')
 const router = useRouter()
-let defaultStore = useDefaultStore()
 const { notify } = useNotification()
+const $cookies = useCookies().cookies
 
-// axios.ins.get('http://localhost:3030/api/carrers/c7e88f1f-76a1-421f-ac19-23242d7f0290').then((res) => {
-//   console.log('2', res.data)
-// }).catch((err) => {
-//   console.log('2', err.message)
-// })
+type responseType = {
+  statusCode: number,
+  message: string,
+  token?: string,
+  user?: dto.userDto,
+}
 
-function login(event: Event) {
-  event.preventDefault()
-  axios.login(email.value, password.value).then((response) => {
-    notify({ text: 'Login successfully.' })
-    router.push('/user/')
+function login() {
+  axios.login(email.value, password.value).then((response: responseType | undefined) => {
+    if (response?.statusCode == 200) {
+      notify({ text: response.message })
+      $cookies.set('token', response.token || '').set('name', 'levanpa')
+      router.push('/user/')
+    } else {
+      notify({
+        text: 'Error: ' + response?.message,
+        type: 'warn',
+      })
+    }
   }).catch((error) => {
     notify({
-      text: 'Login failed.',
+      text: 'Login failed: ' + error.message,
       type: 'error',
     })
   })
@@ -43,7 +51,7 @@ function login(event: Event) {
       label.input-wrapper(for="password-input")
         input.password-input#password-input(type="password1" v-model="password" placeholder="password")
     .button-wrapper
-      button(@click="login($event)") Send
+      button(@click.prevent="login()") Send
       router-link.link(to="/user/register/") I have no account
 </template>
 

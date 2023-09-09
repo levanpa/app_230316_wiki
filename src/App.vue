@@ -19,8 +19,7 @@ Header
 TopBanner
 router-view
 Footer
-//- Notifications
-Notifications.notification-component(position="bottom right" pauseOnHover="true")
+Notifications.notification-component(position="bottom right" pauseOnHover="true" ignoreDuplicates="true")
 </template>
 
 <style lang="sass">

@@ -34,6 +34,9 @@ npm i country-list-json
 npm i @kyvg/vue3-notification
 - install language-plugin-pug support for pug ts
 npm install -D @vue/language-plugin-pug
+- install vue-cookies
+npm i vue3-cookies --save
+
 
 
 
@@ -53,6 +56,8 @@ npm install -D @vue/language-plugin-pug
 + check if logged in user or admin
 - admin/user/guest difference in UI
 - bottom banner/functionality
++ cookies management
+- session management
 
 --- todo later
 - loading state of component
@@ -120,7 +125,7 @@ setup path resolver in both vite.config.ts and tsconfig.json
 
 
 ---- 
-- đăng ký, đăng nhập
++ đăng ký, đăng nhập
 - tạo job mới
 - tạo review mới
 - vote

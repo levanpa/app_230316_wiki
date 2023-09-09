@@ -6,6 +6,7 @@ import * as axios from '@/axios'
 import * as dto from '@/dto'
 import { useNotification } from '@kyvg/vue3-notification'
 import { useDefaultStore } from '@/stores/default'
+import { useCookies } from 'vue3-cookies'
 
 const route = useRoute()
 const router = useRouter()
@@ -40,11 +41,13 @@ function saveProfile() {
 }
 
 function logout() {
-  defaultStore.logout()
+  const $cookies = useCookies().cookies
   notify({
     text: 'You have been logged out',
     type: 'warn'
   })
+  defaultStore.logout()
+  $cookies?.remove('token')
   router.push('/user/login/')
 }
 
@@ -61,7 +64,7 @@ function checkUserType() {
       // router.push('/admin/')
       break
     default:
-      router.push('/user/login/')
+      // router.push('/user/login/')
       break
   }
 }

@@ -7,17 +7,12 @@ import { useDefaultStore } from '@/stores/default'
 import * as dto from '@/dto'
 
 const ins = axios.create({
-  headers: {
-    secret: 'frontend',
-  },
+  headers: { secret: 'frontend' },
 })
 type dtos = dto.jobDto | dto.reviewDto | dto.reportDto | dto.userDto
-let store: any
-
-// nestjs api
-// const BEapi = 'http://localhost:3030/api/'
-// json-server api
 const BEapi = 'http://localhost:3000/'
+let store: any
+// let store: Store<'jobs' | 'users' | 'reviews' | 'reports'> | undefined
 
 function getStoreFromType(type: string) {
   store = undefined
@@ -35,7 +30,7 @@ function getStoreFromType(type: string) {
       store = useUsersStore()
       break
     default:
-      console.log('store type not found')
+      console.log(`store type: ${type} not found`)
   }
 }
 
@@ -107,12 +102,14 @@ async function login(email: string, password: string) {
   await ins
     .post(`${BEapi}auth/login`, { email, password })
     .then((response) => {
-      console.log(response.data.message)
-      // defaultStore.setRefreshToken(response.data.refreshToken)
-      defaultStore.setAccessToken(response.data.token)
-      defaultStore.setUserType('user')
-      defaultStore.setUser(response.data.user)
-      returnData = response.data.user
+      const data = response.data
+      if (data.statusCode == 200) {
+        // defaultStore.setRefreshToken(response.data.refreshToken)
+        defaultStore.setAccessToken(data.token)
+        defaultStore.setUserType('user') // todo: check user role
+        defaultStore.setUser(data.user)
+      }
+      returnData = data
     })
     .catch(({ message, code }) => {
       returnData = { message, code }

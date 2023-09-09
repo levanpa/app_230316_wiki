@@ -2,28 +2,28 @@ import * as VueRouter from 'vue-router'
 import Home from './Home.vue'
 import Detail from './Detail.vue'
 import User from './User.vue'
-import UserNew from './components/user/UserNew.vue'
-import UserDefault from './components/user/UserDefault.vue'
-import UserReviews from './components/user/UserReviews.vue'
-import UserVotes from './components/user/UserVotes.vue'
-import UserRegister from './components/user/UserRegister.vue'
-import UserLogin from './components/user/UserLogin.vue'
+import UserNew from '@/components/user/UserNew.vue'
+import UserDefault from '@/components/user/UserDefault.vue'
+import UserReviews from '@/components/user/UserReviews.vue'
+import UserVotes from '@/components/user/UserVotes.vue'
+import UserRegister from '@/components/user/UserRegister.vue'
+import UserLogin from '@/components/user/UserLogin.vue'
 import Admin from './Admin.vue'
-import AdminDefault from './components/admin/AdminDefault.vue'
-import AdminRequests from './components/admin/AdminRequests.vue'
-import AdminReports from './components/admin/AdminReports.vue'
+import AdminDefault from '@/components/admin/AdminDefault.vue'
+import AdminRequests from '@/components/admin/AdminRequests.vue'
+import AdminReports from '@/components/admin/AdminReports.vue'
 import { useDefaultStore } from '@/stores/default'
 
 const routes = [
   {
     path: '/',
     component: Home,
-    meta: { title: 'home page' }
+    meta: { title: 'home page' },
   },
   {
     path: '/detail/:id',
     component: Detail,
-    meta: { title: 'detail page' }
+    meta: { title: 'detail page' },
   },
   {
     path: '/user/',
@@ -32,47 +32,47 @@ const routes = [
       {
         path: '',
         component: UserDefault,
-        meta: { title: 'user page' }
+        meta: { title: 'user page' },
       },
       {
         path: 'register',
         component: UserRegister,
         meta: {
           breadcrumb: 'Register',
-          title: 'Register'
-        }
+          title: 'Register',
+        },
       },
       {
         path: 'login',
         component: UserLogin,
         meta: {
           breadcrumb: 'Login',
-          title: 'Login'
-        }
+          title: 'Login',
+        },
       },
       {
         path: 'reviews',
         component: UserReviews,
         meta: {
           breadcrumb: 'My reviews',
-          title: 'My reviews'
-        }
+          title: 'My reviews',
+        },
       },
       {
         path: 'votes',
         component: UserVotes,
         meta: {
           breadcrumb: 'My votes',
-          title: 'My votes'
-        }
+          title: 'My votes',
+        },
       },
       {
         path: 'new',
         component: UserNew,
         meta: {
           breadcrumb: 'New review',
-          title: 'New review'
-        }
+          title: 'New review',
+        },
       },
     ],
   },
@@ -83,26 +83,26 @@ const routes = [
       {
         path: '',
         component: AdminDefault,
-        meta: { title: 'admin dashboard' }
+        meta: { title: 'admin dashboard' },
       },
       {
         path: 'requests',
         component: AdminRequests,
         meta: {
           breadcrumb: 'User requests',
-          title: 'user requests'
-        }
+          title: 'user requests',
+        },
       },
       {
         path: 'reports',
         component: AdminReports,
         meta: {
           breadcrumb: 'User reports',
-          title: 'user reports'
-        }
+          title: 'user reports',
+        },
       },
-    ]
-  }
+    ],
+  },
 ]
 
 const router = VueRouter.createRouter({
@@ -124,11 +124,20 @@ router.afterEach((to, from, failure) => {
     let user = defaultStore.getUser()
 
     if (user.id) {
-      defaultStore.setUserType(user.is_admin ? 'admin' : 'user')
+      switch (user.role) {
+        case 0:
+          defaultStore.setUserType('user')
+          break
+        case 1:
+          defaultStore.setUserType('root')
+          break
+        case 2:
+          defaultStore.setUserType('admin')
+      }
     } else {
       defaultStore.setUserType('guest')
-      console.log(defaultStore.getUserType())
     }
+    console.log(defaultStore.getUserType(), user.name ? user.name : 'not login')
   }
 })
 
