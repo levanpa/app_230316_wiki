@@ -7,7 +7,12 @@ import { useDefaultStore } from '@/stores/default'
 import * as dto from '@/dto'
 
 const ins = axios.create({
-  headers: { secret: 'frontend' },
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+    // 'Access-Control-Allow-Credentials': true, // todo: what is this?
+    secret: 'frontend',
+  },
 })
 type dtos = dto.jobDto | dto.reviewDto | dto.reportDto | dto.userDto
 const BEapi = 'http://localhost:3000/'

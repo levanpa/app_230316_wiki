@@ -41,13 +41,11 @@ function saveProfile() {
 }
 
 function logout() {
-  const $cookies = useCookies().cookies
   notify({
     text: 'You have been logged out',
     type: 'warn'
   })
   defaultStore.logout()
-  $cookies?.remove('token')
   router.push('/user/login/')
 }
 

@@ -24,7 +24,6 @@ function login() {
   axios.login(email.value, password.value).then((response: responseType | undefined) => {
     if (response?.statusCode == 200) {
       notify({ text: response.message })
-      $cookies.set('token', response.token || '').set('name', 'levanpa')
       router.push('/user/')
     } else {
       notify({

@@ -66,7 +66,6 @@ export const useDefaultStore = defineStore('default', () => {
   }
 
   return {
-    // user,
     getAccessToken,
     getRefreshToken,
     setAccessToken,
