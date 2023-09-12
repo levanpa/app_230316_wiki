@@ -109,10 +109,8 @@ async function login(email: string, password: string) {
     .then((response) => {
       const data = response.data
       if (data.statusCode == 200) {
-        // defaultStore.setRefreshToken(response.data.refreshToken)
-        defaultStore.setAccessToken(data.token)
-        defaultStore.setUserType('user') // todo: check user role
-        defaultStore.setUser(data.user)
+        defaultStore.userType = 'user' // todo: check user role
+        defaultStore.user = { ...data.user }
       }
       returnData = data
     })

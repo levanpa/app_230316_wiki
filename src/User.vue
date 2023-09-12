@@ -19,6 +19,7 @@ let prevName = nameInput.value
 let prevEmail = emailInput.value
 let defaultStore = useDefaultStore()
 let currentUser: dto.userDto
+const userType = ref<dto.userTypes>('guest')
 
 onMounted(() => {
   checkUserType()
@@ -41,21 +42,22 @@ function saveProfile() {
 }
 
 function logout() {
+  const $cookies = useCookies().cookies
   notify({
     text: 'You have been logged out',
     type: 'warn'
   })
   defaultStore.logout()
+  $cookies?.remove('token')
   router.push('/user/login/')
 }
 
 // check if current user is guest or regular user or admin
 function checkUserType() {
-  const userType = defaultStore.getUserType()
-  // console.log('userType', userType)
-  switch (userType) {
+  userType.value = defaultStore.userType
+  switch (userType.value) {
     case 'user':
-      currentUser = defaultStore.getUser()
+      currentUser = defaultStore.user
       nameInput.value = currentUser.name
       emailInput.value = currentUser.email
     case 'admin':
@@ -81,7 +83,7 @@ watch(() => route.path, newPath => {
 <template lang="pug">
 .user-component
   .layout-wrapper
-    .sidebar-wrapper(v-if="defaultStore.getUserType() != 'guest'")
+    .sidebar-wrapper(v-if="userType != 'guest'")
       .profile-wrapper
         .profile-title PROFILE INFORMATIONS
         .profile-item

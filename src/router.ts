@@ -121,23 +121,26 @@ router.afterEach((to, from, failure) => {
     document.title = `Jobs review - ${to.meta.title}`
 
     let defaultStore = useDefaultStore()
-    let user = defaultStore.getUser()
+    let user = defaultStore.user
 
     if (user.id) {
       switch (user.role) {
-        case 0:
-          defaultStore.setUserType('user')
-          break
         case 1:
-          defaultStore.setUserType('root')
+          defaultStore.userType = 'root'
           break
         case 2:
-          defaultStore.setUserType('admin')
+          defaultStore.userType = 'admin'
+          break
+        case 3:
+          defaultStore.userType = 'user'
+          break
+        default:
+          defaultStore.userType = 'guest'
       }
     } else {
-      defaultStore.setUserType('guest')
+      defaultStore.userType = 'guest'
     }
-    console.log(defaultStore.getUserType(), user.name ? user.name : 'not login')
+    console.log(defaultStore.userType, user.name ? user.name : 'not login')
   }
 })
 

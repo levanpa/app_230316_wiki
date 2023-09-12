@@ -36,6 +36,8 @@ npm i @kyvg/vue3-notification
 npm install -D @vue/language-plugin-pug
 - install vue-cookies
 npm i vue3-cookies --save
+- install pinia-plugin-persistedstate
+npm i pinia-plugin-persistedstate
 
 
 
@@ -58,6 +60,8 @@ npm i vue3-cookies --save
 - bottom banner/functionality
 + cookies management
 - session management
++ keep pinia state after refresh
+
 
 --- todo later
 - loading state of component
