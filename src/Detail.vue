@@ -23,7 +23,15 @@ onMounted(async () => {
   await axios.fetchOne('jobs', jobId).then((response) => {
     job.value = response as dto.jobDto
   })
-  await axios.ins.get(`http://localhost:3000/reviews?job_id=${jobId}&_limit=3`).then((response) => {
+  await axios.ins.post(`http://localhost:3000/reviews/`, {
+    data: {
+      where: {
+        job: job.value
+      }
+    }
+  }).then((response) => {
+    console.log('response', response.data)
+
     reviews.value = response.data
   })
 })
@@ -50,20 +58,20 @@ function postReview(data: dto.reviewDto) {
   })
 
   // todo: fix this
-  function updateReviewList() {
-    tempReviews = reviewStore.get(jobId)
-    if (tempReviews && tempReviews[0]) {
-      reviews.value = tempReviews
-      notify({
-        text: 'Your review has been published.',
-      })
-    } else {
-      notify({
-        text: 'Can not update review list.',
-        type: 'warn'
-      })
-    }
-  }
+  // function updateReviewList() {
+  //   tempReviews = reviewStore.get(jobId)
+  //   if (tempReviews && tempReviews[0]) {
+  //     reviews.value = tempReviews
+  //     notify({
+  //       text: 'Your review has been published.',
+  //     })
+  //   } else {
+  //     notify({
+  //       text: 'Can not update review list.',
+  //       type: 'warn'
+  //     })
+  //   }
+  // }
 
   function updateReviewCount() {
     if (job.value?.review_counter) {

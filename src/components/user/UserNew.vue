@@ -2,7 +2,7 @@
 import { ref, reactive, watch } from 'vue'
 import type { Ref } from 'vue'
 import NewReview from '../NewReview.vue'
-import axios from 'axios'
+import * as axios from '@/axios'
 import * as dto from '../../dto'
 import { useNotification } from '@kyvg/vue3-notification'
 import { useRouter } from 'vue-router'
@@ -24,27 +24,20 @@ init()
 
 // post new review for new job
 function postReview(reviewData: dto.reviewDto) {
-  // create new job
   let job: dto.jobDto = {
     name: jobName.value,
-    img: '',
+    img: 'https://placehold.co/90',
     review_counter: 1,
     category: 0,
-    created: Date.now(),
+    is_public: true,
   }
-  axios.post(`http://localhost:3000/jobs/`, job).then((response) => {
+
+  axios.ins.post(`http://localhost:3000/reviews/add`, { job, reviewData }).then((response) => {
     notify({
-      text: 'Created new job successfully!',
+      text: 'Created (new job) successfully!',
     })
-    // create new review
-    reviewData.job_id = response.data.id
-    axios.post(`http://localhost:3000/reviews/`, reviewData).then((response) => {
-      notify({
-        text: 'Created new review successfully!',
-      })
-      // navigate to jo detail page
-      router.push({ path: `/detail/${reviewData.job_id}` })
-    })
+    // navigate to jo detail page
+    // router.push({ path: `/detail/${response.jobId}` })
   })
 }
 
@@ -65,7 +58,7 @@ watch(jobField, (newValue: string) => {
 })
 
 function getJobList() {
-  axios.get(`http://localhost:3000/jobs/`).then((response) => {
+  axios.ins.get(`http://localhost:3000/jobs/`).then((response) => {
     if (response && response.data) {
       let result: dto.jobDto[] = response.data
       suggestedJobList = result.map(({ id, name }) => ({ id, name }))

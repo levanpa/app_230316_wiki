@@ -10,22 +10,19 @@ export interface userDto {
 export interface jobDto {
   id?: number
   name: string
-  user_id?: number
   img: string
-  review_counter: number
   category: number
+  review_counter: number
   created?: number
   is_public?: boolean
 }
 export interface reviewDto {
   id?: number
-  user_id?: number
   name: string
   content: string
   location: string
   like: number
   dislike: number
-  job_id: number
   created?: number
   experience?: number
   [key: string]: any

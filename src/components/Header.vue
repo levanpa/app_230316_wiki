@@ -1,20 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useDefaultStore } from '@/stores/default'
 import * as dto from '@/dto'
-
 
 const defaultStore = useDefaultStore()
 let userName = ref('Guest')
 
-defaultStore.$onAction(({ name, store, args }) => {
-  switch (name) {
-    case 'setUser':
-      userName.value = (args[0] as dto.userDto).name ?? 'Guest'
-      break
-    case 'logout':
-      userName.value = 'Guest'
-  }
+defaultStore.$subscribe((mutation, state) => {
+  userName.value = state.user.name
+})
+
+onMounted(() => {
+  userName.value = defaultStore.user.name || 'Guest'
 })
 </script>
 

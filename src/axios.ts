@@ -44,8 +44,12 @@ async function fetchOne(type: string, id: number): Promise<dtos | undefined> {
     console.log('id 0 not found')
     return
   }
+
   getStoreFromType(type)
-  if (!store) return
+  if (!store) {
+    console.log('store type not found')
+    return
+  }
 
   let result: dtos = {
     id: 0,
@@ -57,7 +61,7 @@ async function fetchOne(type: string, id: number): Promise<dtos | undefined> {
   let temp: dtos | undefined = store.get(id)
 
   if (temp) {
-    console.log(`fetched ${type} from store`)
+    console.log(`fetched '${type}' from store`)
     return temp
   }
 

@@ -5,13 +5,11 @@ import * as axios from '@/axios'
 import * as dto from '@/dto'
 import { useRouter } from 'vue-router'
 import { useNotification } from '@kyvg/vue3-notification'
-import { useCookies } from 'vue3-cookies'
 
 let email = ref('')
 let password = ref('')
 const router = useRouter()
 const { notify } = useNotification()
-const $cookies = useCookies().cookies
 
 type responseType = {
   statusCode: number,

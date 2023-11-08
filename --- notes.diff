@@ -95,7 +95,7 @@ npm i pinia-plugin-persistedstate
 - quản lý review
 - quản lý vote
 - request job mới
-- đăng xuất
++ đăng xuất
 
 
 
@@ -134,3 +134,6 @@ setup path resolver in both vite.config.ts and tsconfig.json
 - tạo review mới
 - vote
 - management
+
+
+# todo: sua lai page detail filter review theo job id

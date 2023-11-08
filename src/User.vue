@@ -112,7 +112,7 @@ watch(() => route.path, newPath => {
           h3.rule-title Rules and recommendations
           p.rule-content Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis neque, eius praesentium cumque veniam repudiandae, consectetur doloremque placeat earum, ducimus sunt dignissimos sapiente distinctio ipsa incidunt sequi aperiam tempora tempore. Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime minus earum odit, obcaecati delectus repellendus suscipit eius, mollitia soluta atque laudantium officiis eaque eligendi. Est nemo hic odio dignissimos repellendus!
     .sidebar-wrapper(v-else)
-      p You need to login first.
+      router-link(to="/user/login/") You need to login first.
 
     .main-content
       .breadcrumb-wrapper

@@ -3,20 +3,21 @@ import { ref, reactive } from 'vue'
 import type { Ref } from 'vue'
 import { countries } from 'country-list-json'
 import * as dto from '../dto'
+import { useDefaultStore } from '@/stores/default'
 
 defineProps<{
   isShow: boolean,
 }>()
 
 const emit = defineEmits(['change-visibility', 'post-review'])
+const defaultStore = useDefaultStore()
 
 let data: dto.reviewDto = reactive({
-  name: '',
+  name: defaultStore.user.name,
   content: '',
   location: 'VN',
   like: 0,
   dislike: 0,
-  job_id: 0,
   created: 0,
   experience: 0,
 })
@@ -25,9 +26,7 @@ let experienceUnit: Ref<number> = ref(365)
 
 function postReview(event: Event) {
   event.preventDefault()
-  data.name = 'ten cua user'
   data.experience = experienceNumber.value * experienceUnit.value
-  data.created = Date.now()
   emit('post-review', data)
   experienceNumber.value = 1
   experienceUnit.value = 365
